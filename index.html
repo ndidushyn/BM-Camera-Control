@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+    <link rel="stylesheet" href="css/presets.css">
+    <link rel="stylesheet" href="css/midi.css">
+    <link rel="stylesheet" href="css/midi-custom.css">
+    <link rel="stylesheet" href="css/toast.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blackmagic Camera Control Center</title>
+    
+    <!-- Modular CSS Files -->
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/navigation.css">
+    <link rel="stylesheet" href="css/buttons.css">
+    <link rel="stylesheet" href="css/forms.css">
+    <link rel="stylesheet" href="css/panels.css">
+    <link rel="stylesheet" href="css/camera-controls.css">
+    <link rel="stylesheet" href="css/color-controls.css">
+    <link rel="stylesheet" href="css/presets.css">
+    <link rel="stylesheet" href="css/midi.css">
+    <link rel="stylesheet" href="css/toast.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎥</text></svg>">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header compact">
+            <div class="header-content">
+                <h1><span class="camera-icon">🎥</span> Blackmagic Camera Control</h1>
+                <div class="connection-indicator" id="connection-indicator">
+                    <span class="status-dot offline" id="status-dot"></span>
+                    <span id="connection-text">Не підключено</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Unified Camera Connection & Info Panel -->
+        <div class="camera-panel unified">
+            <div class="panel-main">
+                <div class="connection-section">
+                    <div class="connection-input">
+                        <label for="camera-ip">🔌 Камера:</label>
+                        <input type="text" id="camera-ip" value="micro-studio-camera-4k-g2-1.local" 
+                               placeholder="IP або hostname">
+                    </div>
+                    <div class="connection-buttons">
+                        <button type="button" id="connect-btn" class="btn primary compact">Підключити</button>
+                        <button type="button" id="disconnect-btn" class="btn danger compact" disabled>Відключити</button>
+                        <button type="button" id="refresh-status-btn" class="btn secondary compact" disabled>🔄</button>
+                    </div>
+                </div>
+                
+                <div class="camera-info-section" id="camera-info-section" style="display: none;">
+                    <div class="info-divider"></div>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-icon">📷</span>
+                            <span class="info-label">ID:</span>
+                            <span class="info-value" id="camera-id">—</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-icon">🎬</span>
+                            <span class="info-label">Кодек:</span>
+                            <span class="info-value" id="camera-codec">—</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-icon">⚡</span>
+                            <span class="info-label">FPS:</span>
+                            <span class="info-value" id="camera-framerate">—</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-icon">📐</span>
+                            <span class="info-label">Роздільність:</span>
+                            <span class="info-value" id="camera-record-resolution">—</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-icon">🎯</span>
+                            <span class="info-label">Off Speed:</span>
+                            <span class="info-value" id="camera-off-speed">—</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="navigation-tabs">
+            <button type="button" class="tab-btn active" data-tab="camera">🎬 Керування камерою</button>
+            <!-- <button type="button" class="tab-btn" data-tab="color">🎨 Керування кольором</button> -->
+            <!-- <button type="button" class="tab-btn" data-tab="presets">💾 Пресети</button> -->
+            <button type="button" class="tab-btn" data-tab="midi">🎹 MIDI Контроль</button>
+        </div>
+
+        <!-- Camera Controls Tab -->
+        <div id="camera-tab" class="tab-content active">
+        <!-- Main Controls Grid -->
+        <div class="controls-grid">
+            <!-- Video Settings -->
+            <div class="control-panel">
+                
+                
+                <!-- Gain Control -->
+                <div class="control-section">
+                    <h3>📈 Gain Control</h3>
+                    <div class="current-value">
+                        <span>Поточний gain: </span>
+                        <span class="value-display" id="current-gain">❓</span>
+                    </div>
+                    <div class="gain-presets">
+                        <button type="button" class="gain-btn" data-gain="0" disabled>0 dB</button>
+                        <button type="button" class="gain-btn" data-gain="2" disabled>2 dB</button>
+                        <button type="button" class="gain-btn" data-gain="4" disabled>4 dB</button>
+                        <button type="button" class="gain-btn" data-gain="6" disabled>6 dB</button>
+                        <button type="button" class="gain-btn" data-gain="8" disabled>8 dB</button>
+                        <button type="button" class="gain-btn" data-gain="10" disabled>10 dB</button>
+                        <button type="button" class="gain-btn" data-gain="12" disabled>12 dB</button>
+                        <button type="button" class="gain-btn" data-gain="14" disabled>14 dB</button>
+                        <button type="button" class="gain-btn" data-gain="16" disabled>16 dB</button>
+                        <button type="button" class="gain-btn" data-gain="18" disabled>18 dB</button>
+                        <button type="button" class="gain-btn" data-gain="20" disabled>20 dB</button>
+                        <button type="button" class="gain-btn" data-gain="22" disabled>22 dB</button>
+                        <button type="button" class="gain-btn" data-gain="24" disabled>24 dB</button>
+                        <button type="button" class="gain-btn" data-gain="26" disabled>26 dB</button>
+                    </div>
+                    <div class="custom-control">
+                        <input type="number" id="custom-gain" min="0" max="26" step="1" value="0" disabled>
+                        <button type="button" id="set-custom-gain-btn" class="btn secondary" disabled>Встановити</button>
+                    </div>
+                </div>
+
+                <!-- Shutter -->
+                <div class="control-section">
+                    <h3>⏱️ Shutter Control</h3>
+                    <div class="current-value">
+                        <span>Поточна витримка: </span>
+                        <span class="value-display" id="current-shutter">❓</span>
+                    </div>
+                    <div class="shutter-presets">
+                        <button type="button" class="shutter-btn" data-shutter="50" disabled>1/50</button>
+                        <button type="button" class="shutter-btn" data-shutter="60" disabled>1/60</button>
+                        <button type="button" class="shutter-btn" data-shutter="120" disabled>1/120</button>
+                        <button type="button" class="shutter-btn" data-shutter="250" disabled>1/250</button>
+                        <button type="button" class="shutter-btn" data-shutter="500" disabled>1/500</button>
+                        <button type="button" class="shutter-btn" data-shutter="1000" disabled>1/1000</button>
+                    </div>
+                    <div class="custom-control">
+                        <input type="number" id="custom-shutter" min="24" max="2000" step="1" value="50" disabled>
+                        <button type="button" id="set-custom-shutter-btn" class="btn secondary" disabled>Встановити</button>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <!-- Color Settings -->
+            <div class="control-panel">
+
+                <!-- White Balance -->
+                <div class="control-section">
+                    <h3>⚪ White Balance</h3>
+                    <div class="current-value">
+                        <span>Поточний WB: </span>
+                        <span class="value-display" id="current-wb">❓</span>
+                    </div>
+                    
+                    <!-- WB Slider Control -->
+                    <div class="wb-slider-control">
+                        <div class="slider-container">
+                            <label for="wb-slider">Баланс білого:</label>
+                            <input type="range" id="wb-slider" min="2500" max="10000" step="50" value="5600" disabled>
+                            <div class="slider-value-display">
+                                <span id="wb-slider-value">5600K</span>
+                            </div>
+                        </div>
+                        <div class="slider-markers">
+                            <span class="marker" data-temp="2500">2.5K</span>
+                            <span class="marker" data-temp="3200">3.2K</span>
+                            <span class="marker" data-temp="5600">5.6K</span>
+                            <span class="marker" data-temp="6500">6.5K</span>
+                            <span class="marker" data-temp="10000">10K</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Named Presets -->
+                    <div class="wb-named-presets">
+                        <button type="button" class="wb-preset-btn" data-wb="2800" data-name="Вольфрам" disabled>
+                            <span class="preset-icon">🔥</span>
+                            <span class="preset-name">Вольфрам</span>
+                            <span class="preset-value">2800K</span>
+                        </button>
+                        <button type="button" class="wb-preset-btn" data-wb="3200" data-name="Галоген" disabled>
+                            <span class="preset-icon">💡</span>
+                            <span class="preset-name">Галоген</span>
+                            <span class="preset-value">3200K</span>
+                        </button>
+                        <button type="button" class="wb-preset-btn" data-wb="4300" data-name="Флуоресцент" disabled>
+                            <span class="preset-icon">🔆</span>
+                            <span class="preset-name">Флуоресцент</span>
+                            <span class="preset-value">4300K</span>
+                        </button>
+                        <button type="button" class="wb-preset-btn" data-wb="5600" data-name="Денне світло" disabled>
+                            <span class="preset-icon">☀️</span>
+                            <span class="preset-name">Денне світло</span>
+                            <span class="preset-value">5600K</span>
+                        </button>
+                        <button type="button" class="wb-preset-btn" data-wb="6500" data-name="Хмарно" disabled>
+                            <span class="preset-icon">☁️</span>
+                            <span class="preset-name">Хмарно</span>
+                            <span class="preset-value">6500K</span>
+                        </button>
+                        <button type="button" class="wb-preset-btn" data-wb="7500" data-name="Тінь" disabled>
+                            <span class="preset-icon">🌳</span>
+                            <span class="preset-name">Тінь</span>
+                            <span class="preset-value">7500K</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Quick Adjustment -->
+                    <div class="wb-quick-adjust">
+                        <button type="button" class="wb-adjust-btn" data-adjust="-200" disabled>
+                            <span class="adjust-icon">🔵</span>
+                            <span class="adjust-text">-200K</span>
+                        </button>
+                        <button type="button" class="wb-adjust-btn" data-adjust="-100" disabled>
+                            <span class="adjust-icon">🔷</span>
+                            <span class="adjust-text">-100K</span>
+                        </button>
+                        <button type="button" class="wb-adjust-btn" data-adjust="+100" disabled>
+                            <span class="adjust-icon">🔶</span>
+                            <span class="adjust-text">+100K</span>
+                        </button>
+                        <button type="button" class="wb-adjust-btn" data-adjust="+200" disabled>
+                            <span class="adjust-icon">🔴</span>
+                            <span class="adjust-text">+200K</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Custom Input -->
+                    <div class="custom-control">
+                        <input type="number" id="custom-wb" min="2500" max="10000" step="100" value="5600" disabled>
+                        <button type="button" id="set-custom-wb-btn" class="btn secondary" disabled>Встановити</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Focus Control -->
+            <div class="control-panel">
+
+                <!-- Focus -->
+                <div class="control-section">
+                    <h3>🎯 Focus</h3>
+                    <div class="current-value">
+                        <span>Поточний focus: </span>
+                        <span class="value-display" id="current-focus">❓</span>
+                    </div>
+                    <div class="focus-controls">
+                        <button type="button" id="focus-near-btn" class="btn secondary" disabled>Near</button>
+                        <button type="button" id="focus-auto-btn" class="btn primary" disabled>Auto Focus</button>
+                        <button type="button" id="focus-far-btn" class="btn secondary" disabled>Far</button>
+                    </div>
+                    <div class="focus-slider-control">
+                        <input type="range" id="focus-slider" min="0" max="1" step="0.01" value="0.5" disabled>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tint Control -->
+            <div class="control-panel">
+
+                <!-- Tint -->
+                <div class="control-section">
+                    <h3>🌈 Tint</h3>
+                    <div class="current-value">
+                        <span>Поточний tint: </span>
+                        <span class="value-display" id="current-tint">❓</span>
+                    </div>
+                    <div class="tint-control">
+                        <input type="range" id="tint-slider" min="-50" max="50" value="0" disabled>
+                        <span class="range-value" id="tint-value">0</span>
+                    </div>
+                </div>
+
+                <!-- Iris (Aperture) -->
+                <div class="control-section">
+                    <h3>📐 Iris (F-stop)</h3>
+                    <div class="current-value">
+                        <span>Поточна діафрагма: </span>
+                        <span class="value-display" id="current-iris">❓</span>
+                    </div>
+                    <div class="iris-presets">
+                        <button type="button" class="iris-btn" data-iris="1.4" disabled>f/1.4</button>
+                        <button type="button" class="iris-btn" data-iris="2.0" disabled>f/2.0</button>
+                        <button type="button" class="iris-btn" data-iris="2.8" disabled>f/2.8</button>
+                        <button type="button" class="iris-btn" data-iris="4.0" disabled>f/4.0</button>
+                        <button type="button" class="iris-btn" data-iris="5.6" disabled>f/5.6</button>
+                        <button type="button" class="iris-btn" data-iris="8.0" disabled>f/8.0</button>
+                        <button type="button" class="iris-btn" data-iris="11" disabled>f/11</button>
+                        <button type="button" class="iris-btn" data-iris="16" disabled>f/16</button>
+                    </div>
+                    <div class="custom-control">
+                        <input type="number" id="custom-iris" min="1.4" max="22" step="0.1" value="2.8" disabled>
+                        <button type="button" id="set-custom-iris-btn" class="btn secondary" disabled>Встановити</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        </div>
+
+        <!-- Color Controls Tab - ATEM Style Professional Interface -->
+        <div id="color-tab" class="tab-content">
+            <div class="atem-color-container">
+                <div class="control-panel">
+                    <div class="panel-header">
+                        <h2>Керування кольором</h2>
+                    </div>
+                    <div class="control-section">
+                        <p>Функціонал керування кольором буде додано незабаром...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Presets Tab -->
+        <div id="presets-tab" class="tab-content">
+            <div class="presets-modern-container">
+                <!-- Header with Stats -->
+                <div class="presets-header">
+                    <div class="presets-title">
+                        <h2>💾 Управління пресетами</h2>
+                        <div class="presets-stats">
+                            <span id="presets-count">0 пресетів</span>
+                            <span id="active-preset-indicator">• Активний: <span id="current-preset-name">Немає</span></span>
+                        </div>
+                    </div>
+                    <div class="presets-toolbar">
+                        <button type="button" id="refresh-presets-btn" class="btn-modern secondary" disabled>
+                            <span class="btn-icon">�</span>
+                            <span class="btn-text">Оновити</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quick Actions Bar -->
+                <div class="presets-quick-actions">
+                    <div class="quick-action-card">
+                        <div class="action-header">
+                            <span class="action-icon">➕</span>
+                            <span class="action-title">Новий пресет</span>
+                        </div>
+                        <div class="action-content">
+                            <div class="input-modern">
+                                <input type="text" id="new-preset-name" placeholder="Назва пресету..." disabled>
+                            </div>
+                            <button type="button" id="save-preset-btn" class="btn-modern success" disabled>
+                                <span class="btn-icon">💾</span>
+                                <span class="btn-text">Зберегти</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="quick-action-card">
+                        <div class="action-header">
+                            <span class="action-icon">📁</span>
+                            <span class="action-title">Імпорт файлу</span>
+                        </div>
+                        <div class="action-content">
+                            <input type="file" id="preset-file-input" accept=".preset" style="display: none;" disabled>
+                            <button type="button" id="upload-preset-btn" class="btn-modern secondary full-width" disabled>
+                                <span class="btn-icon">�</span>
+                                <span class="btn-text">Завантажити .preset файл</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Presets Grid -->
+                <div class="presets-grid-container">
+                    <div class="presets-grid-header">
+                        <h3>📂 Збережені пресети</h3>
+                        <div class="view-options">
+                            <button type="button" class="view-btn active" data-view="grid" title="Сітка">
+                                <span>⚏</span>
+                            </button>
+                            <button type="button" class="view-btn" data-view="list" title="Список">
+                                <span>☰</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="preset-list" class="presets-grid">
+                        <div class="preset-card loading">
+                            <div class="preset-card-content">
+                                <div class="preset-loading-animation"></div>
+                                <span>Не підключено до камери</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Status Bar -->
+                <div class="presets-status-bar">
+                    <div class="status-info">
+                        <span class="status-dot"></span>
+                        <span id="presets-status-text">Очікування підключення...</span>
+                    </div>
+                    <div class="status-actions">
+                        <button type="button" class="btn-link" id="refresh-data-btn">🔄 Оновити дані</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MIDI Controls Tab -->
+        <div id="midi-tab" class="tab-content">
+            <div class="midi-container">
+                
+                <!-- MIDI Header -->
+                <div class="midi-header">
+                    <h2>🎹 MIDI Контроль</h2>
+                    <div class="midi-status">
+                        <div class="midi-indicator offline" id="midi-status-dot"></div>
+                        <span id="midi-status-text">MIDI відключено</span>
+                    </div>
+                </div>
+
+                <!-- MIDI Connection Panel -->
+                <div class="midi-connection-panel">
+                    <div class="midi-connection-header">
+                        <h3>🔌 Доступні MIDI пристрої</h3>
+                        <button type="button" class="btn secondary compact" id="midi-refresh-btn">🔄 Оновити</button>
+                    </div>
+                    <div class="midi-devices-grid" id="midi-devices-grid">
+                        <div class="midi-device-placeholder">
+                            <div class="placeholder-icon">🎹</div>
+                            <div class="placeholder-text">Пошук MIDI пристроїв...</div>
+                        </div>
+                    </div>
+                    <div class="midi-connection-actions">
+                        <button type="button" class="btn danger" id="midi-disconnect-btn" disabled>Відключити активний пристрій</button>
+                    </div>
+                </div>
+
+                <!-- MIDI Mappings Grid -->
+                <div class="midi-mappings-grid">
+                    
+                    <!-- Camera Controls Mappings -->
+                    <div class="midi-mapping-panel">
+                        <h3>📹 Керування камерою</h3>
+                        <div class="midi-mapping-list">
+                            <div class="midi-mapping-item">
+                                <label>Запис ON/OFF</label>
+                                <button type="button" class="midi-assign-btn" data-function="record">Призначити</button>
+                                <span class="midi-cc-display" id="midi-record-cc">—</span>
+                                <button type="button" class="midi-clear-btn" data-function="record">×</button>
+                            </div>
+                            <div class="midi-mapping-item">
+                                <label>Gain</label>
+                                <button type="button" class="midi-assign-btn" data-function="gain">Призначити</button>
+                                <span class="midi-cc-display" id="midi-gain-cc">—</span>
+                                <button type="button" class="midi-clear-btn" data-function="gain">×</button>
+                            </div>
+                            <div class="midi-mapping-item">
+                                <label>Shutter</label>
+                                <button type="button" class="midi-assign-btn" data-function="shutter">Призначити</button>
+                                <span class="midi-cc-display" id="midi-shutter-cc">—</span>
+                                <button type="button" class="midi-clear-btn" data-function="shutter">×</button>
+                            </div>
+                            <div class="midi-mapping-item">
+                                <label>White Balance</label>
+                                <button type="button" class="midi-assign-btn" data-function="whiteBalance">Призначити</button>
+                                <span class="midi-cc-display" id="midi-whiteBalance-cc">—</span>
+                                <button type="button" class="midi-clear-btn" data-function="whiteBalance">×</button>
+                            </div>
+                            <div class="midi-mapping-item">
+                                <label>Tint</label>
+                                <button type="button" class="midi-assign-btn" data-function="tint">Призначити</button>
+                                <span class="midi-cc-display" id="midi-tint-cc">—</span>
+                                <button type="button" class="midi-clear-btn" data-function="tint">×</button>
+                            </div>
+                            <div class="midi-mapping-item">
+                                <label>Focus</label>
+                                <button type="button" class="midi-assign-btn" data-function="focus">Призначити</button>
+                                <span class="midi-cc-display" id="midi-focus-cc">—</span>
+                                <button type="button" class="midi-clear-btn" data-function="focus">×</button>
+                            </div>
+                            <div class="midi-mapping-item">
+                                <label>Iris</label>
+                                <button type="button" class="midi-assign-btn" data-function="iris">Призначити</button>
+                                <span class="midi-cc-display" id="midi-iris-cc">—</span>
+                                <button type="button" class="midi-clear-btn" data-function="iris">×</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Color Correction Mappings -->
+                    <div class="midi-mapping-panel">
+                        <h3>🎨 Корекція кольору</h3>
+                        <div class="midi-mapping-list">
+                            <div class="midi-mapping-item">
+                                <label>Lift Red</label>
+                                <button type="button" class="midi-assign-btn" data-function="liftRed">Призначити</button>
+                                <span class="midi-cc-display" id="midi-liftRed-cc">—</span>
+                                <button type="button" class="midi-clear-btn" data-function="liftRed">×</button>
+                            </div>
+                            <div class="midi-mapping-item">
+                                <label>Gamma Green</label>
+                                <button type="button" class="midi-assign-btn" data-function="gammaGreen">Призначити</button>
+                                <span class="midi-cc-display" id="midi-gammaGreen-cc">—</span>
+                                <button type="button" class="midi-clear-btn" data-function="gammaGreen">×</button>
+                            </div>
+                            <div class="midi-mapping-item">
+                                <label>Gain Blue</label>
+                                <button type="button" class="midi-assign-btn" data-function="gainBlue">Призначити</button>
+                                <span class="midi-cc-display" id="midi-gainBlue-cc">—</span>
+                                <button type="button" class="midi-clear-btn" data-function="gainBlue">×</button>
+                            </div>
+                            <div class="midi-mapping-item">
+                                <label>Contrast</label>
+                                <button type="button" class="midi-assign-btn" data-function="contrast">Призначити</button>
+                                <span class="midi-cc-display" id="midi-contrast-cc">—</span>
+                                <button type="button" class="midi-clear-btn" data-function="contrast">×</button>
+                            </div>
+                            <div class="midi-mapping-item">
+                                <label>Saturation</label>
+                                <button type="button" class="midi-assign-btn" data-function="saturation">Призначити</button>
+                                <span class="midi-cc-display" id="midi-saturation-cc">—</span>
+                                <button type="button" class="midi-clear-btn" data-function="saturation">×</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Camera Light Controls Mappings -->
+                    <div class="midi-mapping-panel">
+                        <h3>💡 Керування світла камери</h3>
+                        <div class="midi-mapping-list">
+                            <div class="midi-mapping-item">
+                                <label>0 dB</label>
+                                <button type="button" class="midi-assign-btn" data-function="light0db">Призначити</button>
+                                <span class="midi-cc-display" id="midi-light0db-cc">—</span>
+                                <button type="button" class="midi-clear-btn" data-function="light0db">×</button>
+                            </div>
+                            <div class="midi-mapping-item">
+                                <label>2 dB</label>
+                                <button type="button" class="midi-assign-btn" data-function="light2db">Призначити</button>
+                                <span class="midi-cc-display" id="midi-light2db-cc">—</span>
+                                <button type="button" class="midi-clear-btn" data-function="light2db">×</button>
+                            </div>
+                            <div class="midi-mapping-item">
+                                <label>4 dB</label>
+                                <button type="button" class="midi-assign-btn" data-function="light4db">Призначити</button>
+                                <span class="midi-cc-display" id="midi-light4db-cc">—</span>
+                                <button type="button" class="midi-clear-btn" data-function="light4db">×</button>
+                            </div>
+                            <div class="midi-mapping-item">
+                                <label>6 dB</label>
+                                <button type="button" class="midi-assign-btn" data-function="light6db">Призначити</button>
+                                <span class="midi-cc-display" id="midi-light6db-cc">—</span>
+                                <button type="button" class="midi-clear-btn" data-function="light6db">×</button>
+                            </div>
+                            <div class="midi-mapping-item">
+                                <label>8 dB</label>
+                                <button type="button" class="midi-assign-btn" data-function="light8db">Призначити</button>
+                                <span class="midi-cc-display" id="midi-light8db-cc">—</span>
+                                <button type="button" class="midi-clear-btn" data-function="light8db">×</button>
+                            </div>
+                            <div class="midi-mapping-item">
+                                <label>10 dB</label>
+                                <button type="button" class="midi-assign-btn" data-function="light10db">Призначити</button>
+                                <span class="midi-cc-display" id="midi-light10db-cc">—</span>
+                                <button type="button" class="midi-clear-btn" data-function="light10db">×</button>
+                            </div>
+                            <div class="midi-mapping-item">
+                                <label>12 dB</label>
+                                <button type="button" class="midi-assign-btn" data-function="light12db">Призначити</button>
+                                <span class="midi-cc-display" id="midi-light12db-cc">—</span>
+                                <button type="button" class="midi-clear-btn" data-function="light12db">×</button>
+                            </div>
+                            <div class="midi-mapping-item">
+                                <label>14 dB</label>
+                                <button type="button" class="midi-assign-btn" data-function="light14db">Призначити</button>
+                                <span class="midi-cc-display" id="midi-light14db-cc">—</span>
+                                <button type="button" class="midi-clear-btn" data-function="light14db">×</button>
+                            </div>
+                            <div class="midi-mapping-item">
+                                <label>16 dB</label>
+                                <button type="button" class="midi-assign-btn" data-function="light16db">Призначити</button>
+                                <span class="midi-cc-display" id="midi-light16db-cc">—</span>
+                                <button type="button" class="midi-clear-btn" data-function="light16db">×</button>
+                            </div>
+                            <div class="midi-mapping-item">
+                                <label>18 dB</label>
+                                <button type="button" class="midi-assign-btn" data-function="light18db">Призначити</button>
+                                <span class="midi-cc-display" id="midi-light18db-cc">—</span>
+                                <button type="button" class="midi-clear-btn" data-function="light18db">×</button>
+                            </div>
+                            <div class="midi-mapping-item">
+                                <label>20 dB</label>
+                                <button type="button" class="midi-assign-btn" data-function="light20db">Призначити</button>
+                                <span class="midi-cc-display" id="midi-light20db-cc">—</span>
+                                <button type="button" class="midi-clear-btn" data-function="light20db">×</button>
+                            </div>
+                            <div class="midi-mapping-item">
+                                <label>22 dB</label>
+                                <button type="button" class="midi-assign-btn" data-function="light22db">Призначити</button>
+                                <span class="midi-cc-display" id="midi-light22db-cc">—</span>
+                                <button type="button" class="midi-clear-btn" data-function="light22db">×</button>
+                            </div>
+                            <div class="midi-mapping-item">
+                                <label>24 dB</label>
+                                <button type="button" class="midi-assign-btn" data-function="light24db">Призначити</button>
+                                <span class="midi-cc-display" id="midi-light24db-cc">—</span>
+                                <button type="button" class="midi-clear-btn" data-function="light24db">×</button>
+                            </div>
+                            <div class="midi-mapping-item">
+                                <label>26 dB</label>
+                                <button type="button" class="midi-assign-btn" data-function="light26db">Призначити</button>
+                                <span class="midi-cc-display" id="midi-light26db-cc">—</span>
+                                <button type="button" class="midi-clear-btn" data-function="light26db">×</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <!-- MIDI Settings Panel -->
+                <div class="midi-settings-panel">
+                    <h3>⚙️ Налаштування</h3>
+                    <div class="midi-settings-content">
+                        <div class="midi-setting-item">
+                            <label>Канал MIDI:</label>
+                            <select class="midi-select" id="midi-channel-select">
+                                <option value="0">Всі канали</option>
+                                <option value="1">Канал 1</option>
+                                <option value="2">Канал 2</option>
+                                <option value="3">Канал 3</option>
+                                <option value="4">Канал 4</option>
+                                <option value="5">Канал 5</option>
+                                <option value="6">Канал 6</option>
+                                <option value="7">Канал 7</option>
+                                <option value="8">Канал 8</option>
+                                <option value="9">Канал 9</option>
+                                <option value="10">Канал 10</option>
+                                <option value="11">Канал 11</option>
+                                <option value="12">Канал 12</option>
+                                <option value="13">Канал 13</option>
+                                <option value="14">Канал 14</option>
+                                <option value="15">Канал 15</option>
+                                <option value="16">Канал 16</option>
+                            </select>
+                        </div>
+                        <div class="midi-setting-item">
+                            <label>Швидкість відгуку:</label>
+                            <select class="midi-select" id="midi-sensitivity-select">
+                                <option value="low">Низька</option>
+                                <option value="medium" selected>Середня</option>
+                                <option value="high">Висока</option>
+                            </select>
+                        </div>
+                        <div class="midi-setting-item">
+                            <input type="checkbox" id="midi-learn-mode" class="midi-checkbox">
+                            <label for="midi-learn-mode">Режим навчання</label>
+                            <div class="midi-help-text">Увімкнути для автоматичного призначення MIDI контролерів</div>
+                        </div>
+                        <div class="midi-actions">
+                            <button type="button" class="btn secondary" id="midi-clear-all-btn">Очистити всі призначення</button>
+                            <button type="button" class="btn primary" id="midi-save-settings-btn">Зберегти налаштування</button>
+                        </div>
+                        
+                        <!-- Експорт/Імпорт -->
+                        <div class="midi-setting-group">
+                            <h4>📂 Резервна копія налаштувань</h4>
+                            <div class="midi-backup-actions">
+                                <button type="button" class="btn success" id="midi-export-btn">
+                                    <span class="btn-icon">💾</span>
+                                    <span class="btn-text">Експорт в файл</span>
+                                </button>
+                                <button type="button" class="btn info" id="midi-import-btn">
+                                    <span class="btn-icon">📁</span>
+                                    <span class="btn-text">Імпорт з файлу</span>
+                                </button>
+                            </div>
+                            <div class="midi-help-text">
+                                <small>💡 Експортуйте налаштування для переносу на інший комп'ютер</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MIDI Custom Buttons Panel -->
+                <div class="midi-custom-container">
+                    <div class="midi-custom-header">
+                        <h3 class="midi-custom-title">🎛️ Кастомні кнопки</h3>
+                        <div class="midi-custom-actions">
+                            <button type="button" class="btn secondary compact" id="midi-add-custom-btn">
+                                ➕ Додати кнопку
+                            </button>
+                            <button type="button" class="btn secondary compact" id="midi-import-custom-btn">
+                                📁 Імпорт
+                            </button>
+                            <button type="button" class="btn secondary compact" id="midi-export-custom-btn">
+                                💾 Експорт
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="midi-custom-grid" id="midi-custom-grid">
+                        <!-- Custom buttons will be rendered here -->
+                        <div class="midi-custom-empty" id="midi-custom-empty">
+                            <div class="midi-custom-empty-icon">🎛️</div>
+                            <div>Поки що немає кастомних кнопок</div>
+                            <small>Натисніть "Додати кнопку" для створення першої кастомної кнопки</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MIDI Activity Panel -->
+                <div class="midi-activity-panel">
+                    <h3>📊 Активність MIDI</h3>
+                    <div class="midi-activity-log" id="midi-activity-log">
+                        <div class="midi-log-entry">MIDI система готова до підключення...</div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- MIDI Custom Button Modal -->
+    <div class="midi-custom-modal" id="midi-custom-modal">
+        <div class="midi-custom-modal-content">
+            <div class="midi-custom-modal-header">
+                <h3 class="midi-custom-modal-title" id="midi-custom-modal-title">Додати кастомну кнопку</h3>
+                <button type="button" class="midi-custom-modal-close" id="midi-custom-modal-close">×</button>
+            </div>
+            
+            <form id="midi-custom-form">
+                <div class="midi-custom-form-group">
+                    <label class="midi-custom-form-label" for="midi-custom-name">Назва кнопки</label>
+                    <input type="text" id="midi-custom-name" class="midi-custom-form-input" 
+                           placeholder="Наприклад: Збільшити яскравість" required>
+                    <div class="midi-custom-form-help">Коротка назва для ідентифікації кнопки</div>
+                </div>
+                
+                <div class="midi-custom-form-group">
+                    <label class="midi-custom-form-label" for="midi-custom-function">Функція камери</label>
+                    <select id="midi-custom-function" class="midi-custom-form-select" required>
+                        <option value="">Оберіть функцію...</option>
+                        <option value="gain">Gain (ISO)</option>
+                        <option value="iris">Iris (Діафрагма)</option>
+                        <option value="shutter">Shutter (Витримка)</option>
+                        <option value="whiteBalance">White Balance</option>
+                        <option value="tint">Tint</option>
+                        <option value="focus">Focus</option>
+                        <option value="record">Запис ON/OFF</option>
+                        <option value="liftRed">Lift Red</option>
+                        <option value="liftGreen">Lift Green</option>
+                        <option value="liftBlue">Lift Blue</option>
+                        <option value="gammaRed">Gamma Red</option>
+                        <option value="gammaGreen">Gamma Green</option>
+                        <option value="gammaBlue">Gamma Blue</option>
+                        <option value="gainRed">Gain Red</option>
+                        <option value="gainGreen">Gain Green</option>
+                        <option value="gainBlue">Gain Blue</option>
+                        <option value="contrast">Contrast</option>
+                        <option value="saturation">Saturation</option>
+                    </select>
+                    <div class="midi-custom-form-help">Виберіть функцію камери, яку буде контролювати ця кнопка</div>
+                </div>
+                
+                <div class="midi-custom-form-group">
+                    <label class="midi-custom-form-label" for="midi-custom-value">Значення</label>
+                    <input type="number" id="midi-custom-value" class="midi-custom-form-input" 
+                           placeholder="Наприклад: 4200 для WB" step="1">
+                    <div class="midi-custom-form-help">Фіксоване значення (для WB: 2500-10000K, для Gain: 100-25600 ISO) або залиште порожнім для змінного контролера</div>
+                </div>
+                
+                <div class="midi-custom-assign-panel">
+                    <div class="midi-custom-form-group">
+                        <label class="midi-custom-form-label">MIDI призначення</label>
+                        <button type="button" class="btn primary compact" id="midi-custom-assign-btn">
+                            🎹 Призначити MIDI
+                        </button>
+                        <div class="midi-custom-assign-status" id="midi-custom-assign-status">
+                            Натисніть "Призначити MIDI" і рухайте контролером
+                        </div>
+                    </div>
+                    
+                    <div class="midi-custom-cc-info" id="midi-custom-cc-info">
+                        <div class="midi-custom-form-label">Призначено:</div>
+                        <div class="midi-custom-cc-display" id="midi-custom-cc-display">CC 1</div>
+                    </div>
+                </div>
+                
+                <div class="midi-custom-modal-actions">
+                    <button type="button" class="btn danger" id="midi-custom-delete-btn" style="display: none;">
+                        Видалити
+                    </button>
+                    <button type="button" class="btn secondary" id="midi-custom-cancel-btn">
+                        Скасувати
+                    </button>
+                    <button type="submit" class="btn primary" id="midi-custom-save-btn">
+                        Зберегти
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MIDI Learning Indicator -->
+    <div class="midi-learning-indicator" id="midi-learning-indicator">
+        🎹 Очікування MIDI сигналу...
+    </div>
+
+    <script src="js/camera-controller.js"></script>
+    <script src="js/midi-controller.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

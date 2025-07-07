@@ -33,7 +33,16 @@ class PWAManager {
     async registerServiceWorker() {
         if ('serviceWorker' in navigator) {
             try {
-                this.swRegistration = await navigator.serviceWorker.register('/sw.js');
+                // Determine the correct service worker path
+                const swPath = window.location.hostname === 'ndidushyn.github.io' 
+                    ? '/BM-Camera-Control/sw.js' 
+                    : '/sw.js';
+                    
+                this.swRegistration = await navigator.serviceWorker.register(swPath, {
+                    scope: window.location.hostname === 'ndidushyn.github.io' 
+                        ? '/BM-Camera-Control/' 
+                        : '/'
+                });
                 console.log('✅ Service Worker registered:', this.swRegistration);
                 
                 // Handle updates
@@ -200,37 +209,63 @@ class PWAManager {
                     bottom: 80px;
                     max-width: none;
                     margin: 0;
+                    background: var(--surface-color, #fff);
+                    border: 2px solid var(--primary-color, #2563eb);
                 }
                 
                 .pwa-install-content {
-                    padding: 12px;
-                    gap: 10px;
-                    flex-wrap: wrap;
+                    padding: 16px;
+                    flex-direction: column;
+                    text-align: center;
+                    position: relative;
+                }
+                
+                .pwa-install-icon {
+                    font-size: 32px;
+                    margin-bottom: 8px;
+                }
+                
+                .pwa-install-text {
+                    margin-bottom: 16px;
+                }
+                
+                .pwa-install-title {
+                    font-size: 16px;
+                    margin-bottom: 4px;
+                }
+                
+                .pwa-install-subtitle {
+                    font-size: 14px;
                 }
                 
                 .pwa-install-actions {
-                    flex-direction: column;
-                    gap: 8px;
+                    flex-direction: row;
+                    justify-content: center;
+                    gap: 12px;
                     width: 100%;
                 }
                 
                 .pwa-install-btn {
-                    width: 100%;
-                    padding: 12px 16px;
-                    font-size: 14px;
+                    flex: 1;
+                    max-width: 200px;
+                    padding: 14px 20px;
+                    font-size: 16px;
+                    font-weight: 600;
                 }
                 
                 .pwa-dismiss-btn {
                     position: absolute;
                     top: 8px;
                     right: 8px;
-                    background: rgba(255,255,255,0.1);
+                    background: var(--surface-color, #f3f4f6);
                     border-radius: 50%;
-                    width: 32px;
-                    height: 32px;
+                    width: 36px;
+                    height: 36px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
+                    font-size: 20px;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
                 }
             }
         `;

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting... - BM Camera Control</title>
+    <script>
+        // GitHub Pages SPA redirect
+        const currentPath = window.location.pathname;
+        const basePath = '/BM-Camera-Control';
+        
+        if (currentPath.startsWith(basePath)) {
+            // Already has correct base path, redirect to index
+            window.location.replace(basePath + '/');
+        } else {
+            // Add base path and redirect
+            window.location.replace(basePath + currentPath);
+        }
+    </script>
+</head>
+<body>
+    <div style="display: flex; align-items: center; justify-content: center; height: 100vh; font-family: Arial, sans-serif;">
+        <div style="text-align: center;">
+            <h1>🎥 Redirecting...</h1>
+            <p>Taking you to Blackmagic Camera Control</p>
+        </div>
+    </div>
+</body>
+</html>

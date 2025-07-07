@@ -126,21 +126,28 @@ class MobileInterface {
     // Connect to camera
     async connect() {
         const connectionBtn = document.getElementById('connection-toggle');
+        const cameraNameInput = document.getElementById('camera-name');
+        const cameraName = cameraNameInput?.value.trim();
+        
+        if (!cameraName) {
+            this.showToast('Введіть назву камери', 'warning');
+            cameraNameInput?.focus();
+            return;
+        }
         
         try {
             connectionBtn.classList.add('connecting');
             connectionBtn.querySelector('.connection-text').textContent = 'Підключення...';
             
             if (this.cameraController) {
-                await this.cameraController.connect();
+                await this.cameraController.connect(cameraName);
             } else {
-                // Simulate connection for demo
-                await this.simulateConnection();
+                throw new Error('Camera controller недоступний. Переконайтеся, що камера в мережі.');
             }
             
         } catch (error) {
             console.error('Connection failed:', error);
-            this.showToast('Не вдалося підключитися до камери', 'error');
+            this.showToast(`Не вдалося підключитися до "${cameraName}"`, 'error');
             connectionBtn.classList.remove('connecting');
             connectionBtn.querySelector('.connection-text').textContent = 'Підключити';
         }
@@ -161,17 +168,6 @@ class MobileInterface {
         }
     }
     
-    // Simulate connection for demo
-    async simulateConnection() {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                this.isConnected = true;
-                this.updateConnectionStatus();
-                resolve();
-            }, 2000);
-        });
-    }
-    
     // Update connection status UI
     updateConnectionStatus() {
         const connectionBtn = document.getElementById('connection-toggle');
@@ -179,6 +175,8 @@ class MobileInterface {
         const statusIndicator = connectionStatus?.querySelector('.status-indicator');
         const statusText = connectionStatus?.querySelector('.status-text');
         const disconnectBtn = document.getElementById('disconnect-btn');
+        const connectionForm = document.querySelector('.connection-form');
+        const cameraNameInput = document.getElementById('camera-name');
         
         if (this.isConnected) {
             connectionBtn.classList.remove('connecting');
@@ -186,9 +184,12 @@ class MobileInterface {
             connectionBtn.querySelector('.connection-text').textContent = 'Підключено';
             connectionBtn.querySelector('.connection-icon').textContent = '📹';
             
+            // Show compact status, keep form visible but update button
             connectionStatus?.classList.remove('hidden');
             statusIndicator?.classList.add('connected');
-            if (statusText) statusText.textContent = 'Камера підключена';
+            
+            const cameraName = cameraNameInput?.value || 'camera1';
+            if (statusText) statusText.textContent = `Підключено: ${cameraName}`;
             disconnectBtn?.classList.remove('hidden');
             
         } else {
@@ -196,6 +197,7 @@ class MobileInterface {
             connectionBtn.querySelector('.connection-text').textContent = 'Підключити';
             connectionBtn.querySelector('.connection-icon').textContent = '📷';
             
+            // Hide status
             connectionStatus?.classList.add('hidden');
             statusIndicator?.classList.remove('connected');
             if (statusText) statusText.textContent = 'Камера відключена';
@@ -257,6 +259,57 @@ class MobileInterface {
         
         // Setup format buttons
         this.setupFormatButtons();
+        
+        // Setup recording presets
+        this.setupRecordingPresets();
+    }
+    
+    // Setup recording presets
+    setupRecordingPresets() {
+        document.querySelectorAll('[data-preset]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const preset = btn.dataset.preset;
+                this.applyRecordingPreset(preset);
+                this.updateActivePreset(btn, '.recording-preset');
+                this.hapticFeedback();
+            });
+        });
+        
+        // Shutter angle presets
+        document.querySelectorAll('[data-shutter-angle]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const angle = parseInt(btn.dataset.shutterAngle);
+                document.getElementById('shutter-angle-slider').value = angle;
+                document.getElementById('shutter-angle-value').textContent = `${angle}°`;
+                this.sendCameraCommand('shutterAngle', angle);
+                this.hapticFeedback();
+            });
+        });
+    }
+    
+    // Apply recording preset
+    applyRecordingPreset(preset) {
+        const presets = {
+            'interview': { format: '1080p', fps: 25, codec: 'h264' },
+            'documentary': { format: '4k', fps: 24, codec: 'prores' },
+            'event': { format: '1080p', fps: 50, codec: 'h264' },
+            'cinematic': { format: '4k', fps: 24, codec: 'blackmagic' },
+            'sports': { format: '1080p', fps: 60, codec: 'h264' },
+            'slow-motion': { format: '1080p', fps: 120, codec: 'h264' }
+        };
+        
+        const settings = presets[preset];
+        if (settings) {
+            document.getElementById('record-format').value = settings.format;
+            document.getElementById('record-fps').value = settings.fps;
+            document.getElementById('record-codec').value = settings.codec;
+            
+            this.sendCameraCommand('recordingFormat', settings.format);
+            this.sendCameraCommand('recordingFPS', settings.fps);
+            this.sendCameraCommand('recordingCodec', settings.codec);
+            
+            this.showToast(`Застосовано: ${preset}`, 'success');
+        }
     }
     
     // Setup slider control
@@ -359,6 +412,30 @@ class MobileInterface {
                 this.hapticFeedback();
             });
         });
+        
+        // Tint presets
+        document.querySelectorAll('[data-tint]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tint = parseInt(btn.dataset.tint);
+                document.getElementById('tint-slider').value = tint;
+                document.getElementById('tint-value').textContent = tint;
+                this.sendCameraCommand('tint', tint);
+                this.updateActivePreset(btn, '.tint-presets .preset-btn');
+                this.hapticFeedback();
+            });
+        });
+        
+        // Zoom presets
+        document.querySelectorAll('[data-zoom]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const zoom = parseInt(btn.dataset.zoom);
+                document.getElementById('zoom-slider').value = zoom;
+                document.getElementById('zoom-value').textContent = `${(zoom / 100).toFixed(1)}x`;
+                this.sendCameraCommand('zoom', zoom / 100);
+                this.updateActivePreset(btn, '.zoom-presets .preset-btn');
+                this.hapticFeedback();
+            });
+        });
     }
     
     // Setup focus buttons
@@ -395,6 +472,15 @@ class MobileInterface {
                 const fps = parseInt(btn.dataset.fps);
                 this.sendCameraCommand('frameRate', fps);
                 this.updateActivePreset(btn, '.framerate-btn');
+                this.hapticFeedback();
+            });
+        });
+        
+        document.querySelectorAll('[data-codec]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const codec = btn.dataset.codec;
+                this.sendCameraCommand('codec', codec);
+                this.updateActivePreset(btn, '.codec-btn');
                 this.hapticFeedback();
             });
         });

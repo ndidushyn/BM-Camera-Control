@@ -26,218 +26,363 @@
     <link rel="apple-touch-icon" href="icons/icon-192x192.png">
 </head>
 <body class="mobile-interface">
-    <!-- Compact header -->
+    <!-- Modern header -->
     <header class="mobile-header">
         <div class="mobile-header-content">
-            <h1 class="mobile-title">BM Camera</h1>
+            <div class="header-brand">
+                <div class="brand-icon">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                        <path d="M9,2V5H7A2,2 0 0,0 5,7V16A2,2 0 0,0 7,18H9V21H15V18H17A2,2 0 0,0 19,16V7A2,2 0 0,0 17,5H15V2H9M11,4H13V5H11V4M11,18H13V19H11V18M8,7H16V16H8V7Z"/>
+                    </svg>
+                </div>
+                <div class="brand-text">
+                    <h1 class="mobile-title">Blackmagic</h1>
+                    <span class="mobile-subtitle">Camera Control</span>
+                </div>
+            </div>
             <div class="header-actions">
                 <button id="desktop-mode" class="desktop-btn" title="Перейти на десктоп версію">
-                    <span>💻</span>
-                </button>
-                <button id="connection-toggle" class="connection-btn disconnected">
-                    <span class="connection-icon">📷</span>
-                    <span class="connection-text">Підключити</span>
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                        <path d="M21,16H3V4H21M21,2H3C1.89,2 1,2.89 1,4V16A2,2 0 0,0 3,18H10V20H8V22H16V20H14V18H21A2,2 0 0,0 23,16V4C23,2.89 22.1,2 21,2Z"/>
+                    </svg>
                 </button>
             </div>
         </div>
-        
-        <!-- Connection status bar -->
-        <div id="connection-status" class="connection-status hidden">
-            <div class="status-indicator"></div>
-            <span class="status-text">Камера відключена</span>
-            <button id="disconnect-btn" class="disconnect-btn hidden">Відключити</button>
-        </div>
     </header>
+
+    <!-- Connection Controls -->
+    <div class="connection-container">
+        <div class="connection-panel">
+            <div class="connection-form">
+                <div class="connection-input-group">
+                    <input type="text" id="camera-name" class="camera-name-input" placeholder="Назва камери (camera1)" value="camera1">
+                    <button id="connection-toggle" class="connection-btn">
+                        <span class="connection-icon">📷</span>
+                        <span class="connection-text">Підключити</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Compact status when connected -->
+            <div id="connection-status" class="connection-status hidden">
+                <div class="status-content">
+                    <div class="status-indicator"></div>
+                    <span class="status-text">Камера відключена</span>
+                </div>
+                <button id="disconnect-btn" class="disconnect-btn hidden">Відключити</button>
+            </div>
+        </div>
+    </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Main content area -->
     <main class="mobile-main">
         <!-- Light Control Tab -->
         <section id="light-tab" class="mobile-tab active">
-            <div class="mobile-section">
-                <h2 class="section-title">Освітлення</h2>
-                
-                <!-- Gain Control -->
-                <div class="control-group">
-                    <div class="control-header">
-                        <h3>Gain</h3>
-                        <span id="gain-value" class="control-value">0 dB</span>
-                    </div>
-                    <div class="control-slider">
-                        <input type="range" id="gain-slider" min="-12" max="36" step="1" value="0">
-                    </div>
-                    <div class="quick-presets">
-                        <button class="preset-btn" data-gain="-12">-12</button>
-                        <button class="preset-btn" data-gain="0">0</button>
-                        <button class="preset-btn" data-gain="6">+6</button>
-                        <button class="preset-btn" data-gain="12">+12</button>
-                        <button class="preset-btn" data-gain="18">+18</button>
-                    </div>
+            <h2 class="section-title">💡 Освітлення</h2>
+            
+            <!-- Gain Control -->
+            <div class="control-section">
+                <div class="control-header">
+                    <h3>Gain</h3>
+                    <span id="gain-value" class="control-value">0 dB</span>
                 </div>
+                <div class="control-slider">
+                    <input type="range" id="gain-slider" min="-12" max="36" step="1" value="0">
+                </div>
+                <div class="quick-presets">
+                    <button class="preset-btn" data-gain="-12">-12</button>
+                    <button class="preset-btn" data-gain="-6">-6</button>
+                    <button class="preset-btn" data-gain="0">0</button>
+                    <button class="preset-btn" data-gain="6">+6</button>
+                    <button class="preset-btn" data-gain="12">+12</button>
+                    <button class="preset-btn" data-gain="18">+18</button>
+                    <button class="preset-btn" data-gain="24">+24</button>
+                    <button class="preset-btn" data-gain="30">+30</button>
+                </div>
+            </div>
 
-                <!-- Iris Control -->
-                <div class="control-group">
-                    <div class="control-header">
-                        <h3>Iris</h3>
-                        <span id="iris-value" class="control-value">f/2.8</span>
-                    </div>
-                    <div class="control-slider">
-                        <input type="range" id="iris-slider" min="140" max="2048" step="1" value="400">
-                    </div>
-                    <div class="quick-presets">
-                        <button class="preset-btn" data-iris="140">f/1.4</button>
-                        <button class="preset-btn" data-iris="200">f/2.0</button>
-                        <button class="preset-btn" data-iris="280">f/2.8</button>
-                        <button class="preset-btn" data-iris="400">f/4.0</button>
-                        <button class="preset-btn" data-iris="560">f/5.6</button>
-                    </div>
+            <!-- Iris Control -->
+            <div class="control-section">
+                <div class="control-header">
+                    <h3>Iris</h3>
+                    <span id="iris-value" class="control-value">f/2.8</span>
+                </div>
+                <div class="control-slider">
+                    <input type="range" id="iris-slider" min="140" max="2048" step="1" value="400">
+                </div>
+                <div class="quick-presets">
+                    <button class="preset-btn" data-iris="140">f/1.4</button>
+                    <button class="preset-btn" data-iris="200">f/2.0</button>
+                    <button class="preset-btn" data-iris="280">f/2.8</button>
+                    <button class="preset-btn" data-iris="400">f/4.0</button>
+                    <button class="preset-btn" data-iris="560">f/5.6</button>
                 </div>
             </div>
         </section>
 
         <!-- White Balance Tab -->
         <section id="wb-tab" class="mobile-tab">
-            <div class="mobile-section">
-                <h2 class="section-title">Баланс білого</h2>
-                
-                <!-- White Balance Temperature -->
-                <div class="control-group">
-                    <div class="control-header">
-                        <h3>Температура</h3>
-                        <span id="wb-temp-value" class="control-value">5600K</span>
-                    </div>
-                    <div class="control-slider">
-                        <input type="range" id="wb-temp-slider" min="2500" max="10000" step="50" value="5600">
-                    </div>
-                    <div class="wb-presets">
-                        <button class="preset-btn wb-preset" data-temp="3200">3200K<br><small>Tungsten</small></button>
-                        <button class="preset-btn wb-preset" data-temp="4300">4300K<br><small>Fluorescent</small></button>
-                        <button class="preset-btn wb-preset" data-temp="5600">5600K<br><small>Daylight</small></button>
-                        <button class="preset-btn wb-preset" data-temp="6500">6500K<br><small>Cloudy</small></button>
-                    </div>
+            <h2 class="section-title">🎨 Баланс білого</h2>
+            
+            <!-- White Balance Temperature -->
+            <div class="control-section">
+                <div class="control-header">
+                    <h3>Температура</h3>
+                    <span id="wb-temp-value" class="control-value">5600K</span>
                 </div>
+                <div class="control-slider">
+                    <input type="range" id="wb-temp-slider" min="2500" max="10000" step="50" value="5600">
+                </div>
+                <div class="wb-presets">
+                    <button class="preset-btn wb-preset" data-temp="2500">2500K<br><small>Candle</small></button>
+                    <button class="preset-btn wb-preset" data-temp="3200">3200K<br><small>Tungsten</small></button>
+                    <button class="preset-btn wb-preset" data-temp="4200">4200K<br><small>Cool White</small></button>
+                    <button class="preset-btn wb-preset" data-temp="5600">5600K<br><small>Daylight</small></button>
+                    <button class="preset-btn wb-preset" data-temp="6500">6500K<br><small>Cloudy</small></button>
+                    <button class="preset-btn wb-preset" data-temp="7500">7500K<br><small>Shade</small></button>
+                    <button class="preset-btn wb-preset" data-temp="8500">8500K<br><small>Blue Sky</small></button>
+                    <button class="preset-btn wb-preset" data-temp="10000">10000K<br><small>Deep Blue</small></button>
+                </div>
+            </div>
 
-                <!-- Tint Control -->
-                <div class="control-group">
-                    <div class="control-header">
-                        <h3>Tint</h3>
-                        <span id="tint-value" class="control-value">0</span>
-                    </div>
-                    <div class="control-slider">
-                        <input type="range" id="tint-slider" min="-50" max="50" step="1" value="0">
-                    </div>
+            <!-- Tint Control -->
+            <div class="control-section">
+                <div class="control-header">
+                    <h3>Tint</h3>
+                    <span id="tint-value" class="control-value">0</span>
+                </div>
+                <div class="control-slider">
+                    <input type="range" id="tint-slider" min="-50" max="50" step="1" value="0">
+                </div>
+                <div class="tint-presets">
+                    <button class="preset-btn" data-tint="-30">Green -30</button>
+                    <button class="preset-btn" data-tint="-15">Green -15</button>
+                    <button class="preset-btn" data-tint="0">Neutral</button>
+                    <button class="preset-btn" data-tint="15">Magenta +15</button>
+                    <button class="preset-btn" data-tint="30">Magenta +30</button>
                 </div>
             </div>
         </section>
 
         <!-- Focus Tab -->
         <section id="focus-tab" class="mobile-tab">
-            <div class="mobile-section">
-                <h2 class="section-title">Фокус</h2>
-                
-                <!-- Focus Control -->
-                <div class="control-group">
-                    <div class="control-header">
-                        <h3>Focus</h3>
-                        <span id="focus-value" class="control-value">50%</span>
-                    </div>
-                    <div class="control-slider">
-                        <input type="range" id="focus-slider" min="0" max="100" step="1" value="50">
-                    </div>
-                    <div class="focus-controls">
-                        <button class="control-btn" id="focus-near">Near</button>
-                        <button class="control-btn" id="autofocus">Auto Focus</button>
-                        <button class="control-btn" id="focus-far">Far</button>
-                    </div>
+            <h2 class="section-title">🔍 Фокус і Zoom</h2>
+            
+            <!-- Focus Control -->
+            <div class="control-section">
+                <div class="control-header">
+                    <h3>Focus</h3>
+                    <span id="focus-value" class="control-value">50%</span>
                 </div>
+                <div class="control-slider">
+                    <input type="range" id="focus-slider" min="0" max="100" step="1" value="50">
+                </div>
+                <div class="focus-controls">
+                    <button class="control-btn focus-btn" id="focus-near">📍 Near</button>
+                    <button class="control-btn focus-btn primary" id="autofocus">🎯 Auto Focus</button>
+                    <button class="control-btn focus-btn" id="focus-far">🔭 Far</button>
+                </div>
+            </div>
 
-                <!-- Zoom Control -->
-                <div class="control-group">
-                    <div class="control-header">
-                        <h3>Zoom</h3>
-                        <span id="zoom-value" class="control-value">1.0x</span>
-                    </div>
-                    <div class="control-slider">
-                        <input type="range" id="zoom-slider" min="100" max="1600" step="10" value="100">
-                    </div>
+            <!-- Zoom Control -->
+            <div class="control-section">
+                <div class="control-header">
+                    <h3>Zoom</h3>
+                    <span id="zoom-value" class="control-value">1.0x</span>
+                </div>
+                <div class="control-slider">
+                    <input type="range" id="zoom-slider" min="100" max="1600" step="10" value="100">
+                </div>
+                <div class="zoom-presets">
+                    <button class="preset-btn" data-zoom="100">1.0x</button>
+                    <button class="preset-btn" data-zoom="200">2.0x</button>
+                    <button class="preset-btn" data-zoom="400">4.0x</button>
+                    <button class="preset-btn" data-zoom="800">8.0x</button>
+                    <button class="preset-btn" data-zoom="1600">16.0x</button>
                 </div>
             </div>
         </section>
 
         <!-- Shutter Tab -->
         <section id="shutter-tab" class="mobile-tab">
-            <div class="mobile-section">
-                <h2 class="section-title">Затвор</h2>
-                
-                <!-- Shutter Speed -->
-                <div class="control-group">
-                    <div class="control-header">
-                        <h3>Shutter Speed</h3>
-                        <span id="shutter-value" class="control-value">1/50</span>
-                    </div>
-                    <div class="control-slider">
-                        <input type="range" id="shutter-slider" min="24" max="2000" step="1" value="50">
-                    </div>
-                    <div class="shutter-presets">
-                        <button class="preset-btn" data-shutter="24">1/24</button>
-                        <button class="preset-btn" data-shutter="25">1/25</button>
-                        <button class="preset-btn" data-shutter="30">1/30</button>
-                        <button class="preset-btn" data-shutter="50">1/50</button>
-                        <button class="preset-btn" data-shutter="60">1/60</button>
-                        <button class="preset-btn" data-shutter="120">1/120</button>
-                    </div>
+            <h2 class="section-title">📷 Затвор</h2>
+            
+            <!-- Shutter Speed Control -->
+            <div class="control-section">
+                <div class="control-header">
+                    <h3>Shutter Speed</h3>
+                    <span id="shutter-value" class="control-value">1/50</span>
                 </div>
+                <div class="control-slider">
+                    <input type="range" id="shutter-slider" min="24" max="2000" step="1" value="50">
+                </div>
+                <div class="quick-presets">
+                    <button class="preset-btn" data-shutter="24">1/24</button>
+                    <button class="preset-btn" data-shutter="25">1/25</button>
+                    <button class="preset-btn" data-shutter="30">1/30</button>
+                    <button class="preset-btn" data-shutter="48">1/48</button>
+                    <button class="preset-btn" data-shutter="50">1/50</button>
+                    <button class="preset-btn" data-shutter="60">1/60</button>
+                    <button class="preset-btn" data-shutter="100">1/100</button>
+                    <button class="preset-btn" data-shutter="120">1/120</button>
+                    <button class="preset-btn" data-shutter="200">1/200</button>
+                    <button class="preset-btn" data-shutter="250">1/250</button>
+                </div>
+            </div>
 
-                <!-- Shutter Angle -->
-                <div class="control-group">
-                    <div class="control-header">
-                        <h3>Shutter Angle</h3>
-                        <span id="shutter-angle-value" class="control-value">180°</span>
-                    </div>
-                    <div class="control-slider">
-                        <input type="range" id="shutter-angle-slider" min="45" max="360" step="1" value="180">
-                    </div>
+            <!-- Shutter Angle Control -->
+            <div class="control-section">
+                <div class="control-header">
+                    <h3>Shutter Angle</h3>
+                    <span id="shutter-angle-value" class="control-value">180°</span>
                 </div>
+                <div class="control-slider">
+                    <input type="range" id="shutter-angle-slider" min="45" max="360" step="15" value="180">
+                </div>
+                <div class="quick-presets">
+                    <button class="preset-btn" data-shutter-angle="45">45°</button>
+                    <button class="preset-btn" data-shutter-angle="90">90°</button>
+                    <button class="preset-btn" data-shutter-angle="120">120°</button>
+                    <button class="preset-btn" data-shutter-angle="180">180°</button>
+                    <button class="preset-btn" data-shutter-angle="270">270°</button>
+                    <button class="preset-btn" data-shutter-angle="360">360°</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Format Tab -->
+        <section id="format-tab" class="mobile-tab">
+            <h2 class="section-title">📐 Формат запису</h2>
+            
+            <!-- Resolution Settings -->
+            <div class="control-section">
+                <div class="control-header">
+                    <h3>Роздільність</h3>
+                </div>
+                <div class="format-grid">
+                    <button class="format-btn" data-format="1080p">1080p HD</button>
+                    <button class="format-btn" data-format="4k">4K UHD</button>
+                    <button class="format-btn" data-format="8k">8K</button>
+                    <button class="format-btn" data-format="2.6k">2.6K</button>
+                </div>
+            </div>
+
+            <!-- Frame Rate Settings -->
+            <div class="control-section">
+                <div class="control-header">
+                    <h3>Частота кадрів</h3>
+                </div>
+                <div class="format-grid">
+                    <button class="framerate-btn" data-fps="23.98">23.98p</button>
+                    <button class="framerate-btn" data-fps="24">24p</button>
+                    <button class="framerate-btn" data-fps="25">25p</button>
+                    <button class="framerate-btn" data-fps="29.97">29.97p</button>
+                    <button class="framerate-btn" data-fps="30">30p</button>
+                    <button class="framerate-btn" data-fps="50">50p</button>
+                    <button class="framerate-btn" data-fps="59.94">59.94p</button>
+                    <button class="framerate-btn" data-fps="60">60p</button>
+                </div>
+            </div>
+
+            <!-- Codec Settings -->
+            <div class="control-section">
+                <div class="control-header">
+                    <h3>Кодек</h3>
+                </div>
+                <div class="format-grid">
+                    <button class="codec-btn" data-codec="prores">ProRes</button>
+                    <button class="codec-btn" data-codec="h264">H.264</button>
+                    <button class="codec-btn" data-codec="h265">H.265</button>
+                    <button class="codec-btn" data-codec="blackmagic">Blackmagic RAW</button>
+                </div>
+            </div>
+        </section>
             </div>
         </section>
 
         <!-- Recording Tab -->
         <section id="record-tab" class="mobile-tab">
-            <div class="mobile-section">
-                <h2 class="section-title">Запис</h2>
-                
-                <!-- Recording Controls -->
-                <div class="recording-controls">
+            <h2 class="section-title">🎬 Запис</h2>
+            
+            <!-- Recording Controls -->
+            <div class="control-section recording-section">
+                <div class="recording-main-controls">
                     <button id="record-btn" class="record-button">
                         <span class="record-icon">⏺</span>
                         <span class="record-text">Старт</span>
                     </button>
-                    
-                    <div class="recording-status">
-                        <div class="recording-indicator"></div>
+                </div>
+                
+                <!-- Recording Status -->
+                <div class="recording-status">
+                    <div class="recording-indicator">
+                        <span class="recording-dot"></span>
                         <span class="recording-time">00:00:00</span>
                     </div>
                 </div>
+            </div>
 
-                <!-- Recording Settings -->
-                <div class="control-group">
-                    <h3>Format</h3>
-                    <div class="format-grid">
-                        <button class="format-btn active" data-format="4K">4K</button>
-                        <button class="format-btn" data-format="UHD">UHD</button>
-                        <button class="format-btn" data-format="1080p">1080p</button>
-                        <button class="format-btn" data-format="720p">720p</button>
-                    </div>
+            <!-- Recording Presets -->
+            <div class="control-section">
+                <div class="control-header">
+                    <h3>Швидкі налаштування</h3>
                 </div>
+                <div class="recording-presets">
+                    <button class="preset-btn recording-preset" data-preset="interview">
+                        📺 Інтерв'ю<br><small>1080p 25fps</small>
+                    </button>
+                    <button class="preset-btn recording-preset" data-preset="documentary">
+                        🎥 Документальне<br><small>4K 24fps</small>
+                    </button>
+                    <button class="preset-btn recording-preset" data-preset="event">
+                        🎊 Подія<br><small>1080p 50fps</small>
+                    </button>
+                    <button class="preset-btn recording-preset" data-preset="cinematic">
+                        🎬 Кінематографічне<br><small>4K 24fps RAW</small>
+                    </button>
+                    <button class="preset-btn recording-preset" data-preset="sports">
+                        ⚽ Спорт<br><small>1080p 60fps</small>
+                    </button>
+                    <button class="preset-btn recording-preset" data-preset="slow-motion">
+                        🐌 Слоу моушн<br><small>1080p 120fps</small>
+                    </button>
+                </div>
+            </div>
 
-                <div class="control-group">
-                    <h3>Frame Rate</h3>
-                    <div class="framerate-grid">
-                        <button class="framerate-btn" data-fps="24">24fps</button>
-                        <button class="framerate-btn active" data-fps="25">25fps</button>
-                        <button class="framerate-btn" data-fps="30">30fps</button>
-                        <button class="framerate-btn" data-fps="50">50fps</button>
-                        <button class="framerate-btn" data-fps="60">60fps</button>
-                        <button class="framerate-btn" data-fps="120">120fps</button>
+            <!-- Recording Settings -->
+            <div class="control-section">
+                <div class="control-header">
+                    <h3>Налаштування запису</h3>
+                </div>
+                <div class="recording-settings">
+                    <div class="setting-row">
+                        <label for="record-format">Формат:</label>
+                        <select id="record-format" class="setting-select">
+                            <option value="1080p">1080p HD</option>
+                            <option value="4k">4K UHD</option>
+                            <option value="2.6k">2.6K</option>
+                        </select>
+                    </div>
+                    <div class="setting-row">
+                        <label for="record-fps">FPS:</label>
+                        <select id="record-fps" class="setting-select">
+                            <option value="24">24p</option>
+                            <option value="25">25p</option>
+                            <option value="30">30p</option>
+                            <option value="50">50p</option>
+                            <option value="60">60p</option>
+                        </select>
+                    </div>
+                    <div class="setting-row">
+                        <label for="record-codec">Кодек:</label>
+                        <select id="record-codec" class="setting-select">
+                            <option value="h264">H.264</option>
+                            <option value="prores">ProRes</option>
+                            <option value="blackmagic">Blackmagic RAW</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -261,6 +406,10 @@
         <button class="nav-item" data-tab="shutter">
             <span class="nav-icon">📷</span>
             <span class="nav-label">Затвор</span>
+        </button>
+        <button class="nav-item" data-tab="format">
+            <span class="nav-icon">📐</span>
+            <span class="nav-label">Формат</span>
         </button>
         <button class="nav-item" data-tab="record">
             <span class="nav-icon">⏺️</span>

@@ -383,11 +383,47 @@
 .wb-preset[data-temp="4200"] { background: linear-gradient(135deg, #87ceeb, #98d8e8); color: #2d3748; border-color: #87ceeb; }
 .wb-preset[data-temp="5600"] { background: linear-gradient(135deg, #f0f8ff, #e6f3ff); color: #2d3748; border-color: #87ceeb; }
 .wb-preset[data-temp="6500"] { background: linear-gradient(135deg, #b0e0e6, #add8e6); color: #2d3748; border-color: #b0e0e6; }
-.wb-preset[data-temp="8000"] { background: linear-gradient(135deg, #4682b4, #5f9ea0); color: white; border-color: #4682b4; }
+.wb-preset[data-temp="7500"] { background: linear-gradient(135deg, #4682b4, #5f9ea0); color: white; border-color: #4682b4; }
 
 .wb-preset.active {
     transform: scale(1.05);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Better preset button layout */
+.quick-presets {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.quick-presets .preset-btn {
+    min-width: 60px;
+    padding: 10px 8px;
+    font-size: 13px;
+}
+
+/* WB presets grid layout */
+.wb-presets {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.wb-presets .preset-btn {
+    padding: 12px 8px;
+    font-size: 12px;
+    text-align: center;
+    line-height: 1.2;
+}
+
+.wb-presets .preset-btn small {
+    display: block;
+    font-size: 10px;
+    opacity: 0.8;
+    margin-top: 2px;
 }
 
 /* Responsive adjustments for very small screens */

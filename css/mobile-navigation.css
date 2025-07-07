@@ -24,13 +24,15 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 8px 12px;
-    border-radius: 12px;
+    padding: 6px 8px;
+    border-radius: 10px;
     transition: all 0.3s ease;
     color: var(--text-muted);
-    min-width: 60px;
-    gap: 4px;
+    min-width: 50px;
+    flex: 1;
+    gap: 3px;
     position: relative;
+    max-width: 70px;
 }
 
 .nav-item:hover {
@@ -58,7 +60,7 @@
 }
 
 .nav-icon {
-    font-size: 20px;
+    font-size: 18px;
     line-height: 1;
     transition: all 0.3s ease;
 }
@@ -68,7 +70,7 @@
 }
 
 .nav-label {
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 500;
     line-height: 1;
     white-space: nowrap;

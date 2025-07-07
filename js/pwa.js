@@ -66,6 +66,14 @@ class PWAManager {
     showInstallButton() {
         if (this.isInstalled) return;
         
+        // Don't show if dismissed recently (within 24 hours)
+        const dismissedTime = localStorage.getItem('pwa-install-dismissed');
+        if (dismissedTime) {
+            const timeDiff = Date.now() - parseInt(dismissedTime);
+            const hoursDiff = timeDiff / (1000 * 60 * 60);
+            if (hoursDiff < 24) return;
+        }
+        
         // Create install banner if it doesn't exist
         if (!document.getElementById('pwa-install-banner')) {
             this.createInstallBanner();
@@ -105,6 +113,8 @@ class PWAManager {
                 box-shadow: 0 4px 20px rgba(0,0,0,0.15);
                 z-index: 1000;
                 animation: slideUp 0.3s ease-out;
+                max-width: 500px;
+                margin: 0 auto;
             }
             
             .pwa-install-content {
@@ -187,7 +197,40 @@ class PWAManager {
                 .pwa-install-banner {
                     left: 10px;
                     right: 10px;
-                    bottom: 10px;
+                    bottom: 80px;
+                    max-width: none;
+                    margin: 0;
+                }
+                
+                .pwa-install-content {
+                    padding: 12px;
+                    gap: 10px;
+                    flex-wrap: wrap;
+                }
+                
+                .pwa-install-actions {
+                    flex-direction: column;
+                    gap: 8px;
+                    width: 100%;
+                }
+                
+                .pwa-install-btn {
+                    width: 100%;
+                    padding: 12px 16px;
+                    font-size: 14px;
+                }
+                
+                .pwa-dismiss-btn {
+                    position: absolute;
+                    top: 8px;
+                    right: 8px;
+                    background: rgba(255,255,255,0.1);
+                    border-radius: 50%;
+                    width: 32px;
+                    height: 32px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                 }
             }
         `;

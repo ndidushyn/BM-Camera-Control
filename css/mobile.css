@@ -1,0 +1,473 @@
+/* Mobile Interface Base Styles */
+.mobile-interface {
+    background: var(--background-color);
+    color: var(--text-color);
+    font-family: var(--font-family);
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    --mobile-header-height: 60px;
+    --mobile-nav-height: 80px;
+    --mobile-safe-area-top: env(safe-area-inset-top);
+    --mobile-safe-area-bottom: env(safe-area-inset-bottom);
+}
+
+/* Mobile Header */
+.mobile-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: white;
+    padding: var(--mobile-safe-area-top) 16px 0 16px;
+    height: calc(var(--mobile-header-height) + var(--mobile-safe-area-top));
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.mobile-header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--mobile-header-height);
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.mobile-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+    color: white;
+}
+
+/* Connection Button */
+.connection-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    padding: 8px 16px;
+    color: white;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    min-width: 100px;
+    justify-content: center;
+}
+
+.connection-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.connection-btn.connecting {
+    background: #fbbf24;
+    border-color: #f59e0b;
+    color: #92400e;
+}
+
+.connection-btn.connected {
+    background: #10b981;
+    border-color: #059669;
+    color: white;
+}
+
+.connection-icon {
+    font-size: 16px;
+}
+
+/* Connection Status Bar */
+.connection-status {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.connection-status.hidden {
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ef4444;
+    transition: background-color 0.3s ease;
+}
+
+.status-indicator.connected {
+    background: #10b981;
+}
+
+.status-indicator.connecting {
+    background: #fbbf24;
+    animation: pulse 1s infinite;
+}
+
+.disconnect-btn {
+    background: #ef4444;
+    border: none;
+    border-radius: 12px;
+    padding: 4px 12px;
+    color: white;
+    font-size: 12px;
+    margin-left: auto;
+}
+
+/* Main Content */
+.mobile-main {
+    flex: 1;
+    margin-top: calc(var(--mobile-header-height) + var(--mobile-safe-area-top));
+    margin-bottom: calc(var(--mobile-nav-height) + var(--mobile-safe-area-bottom));
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 0;
+}
+
+/* Mobile Tabs */
+.mobile-tab {
+    display: none;
+    padding: 0;
+    height: 100%;
+}
+
+.mobile-tab.active {
+    display: block;
+}
+
+.mobile-section {
+    padding: 20px 16px;
+    height: 100%;
+}
+
+.section-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0 0 24px 0;
+    color: var(--text-color);
+    text-align: center;
+}
+
+/* Control Groups */
+.control-group {
+    background: var(--panel-background);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.control-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.control-header h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+    color: var(--text-color);
+}
+
+.control-value {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--primary-color);
+    background: rgba(37, 99, 235, 0.1);
+    padding: 4px 12px;
+    border-radius: 8px;
+}
+
+/* Sliders */
+.control-slider {
+    margin-bottom: 16px;
+}
+
+.control-slider input[type="range"] {
+    width: 100%;
+    height: 8px;
+    background: var(--border-color);
+    border-radius: 4px;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.control-slider input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 28px;
+    height: 28px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
+    transition: all 0.2s ease;
+}
+
+.control-slider input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+}
+
+.control-slider input[type="range"]::-moz-range-thumb {
+    width: 28px;
+    height: 28px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
+}
+
+/* Quick Presets */
+.quick-presets {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+}
+
+.preset-btn {
+    background: var(--button-background);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 12px 8px;
+    color: var(--text-color);
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.preset-btn:hover {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.preset-btn.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* WB Presets */
+.wb-presets {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.wb-preset {
+    padding: 16px 12px;
+    text-align: center;
+    line-height: 1.2;
+}
+
+.wb-preset small {
+    opacity: 0.8;
+    font-size: 11px;
+}
+
+/* Focus Controls */
+.focus-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+}
+
+.control-btn {
+    background: var(--button-background);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 16px 12px;
+    color: var(--text-color);
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.control-btn:hover {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* Shutter Presets */
+.shutter-presets {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+/* Recording Controls */
+.recording-controls {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.record-button {
+    background: #ef4444;
+    border: none;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px auto;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px rgba(239, 68, 68, 0.3);
+}
+
+.record-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+}
+
+.record-button.recording {
+    background: #10b981;
+    animation: pulse 2s infinite;
+}
+
+.record-icon {
+    font-size: 24px;
+    margin-bottom: 4px;
+}
+
+.record-text {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.recording-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.recording-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #6b7280;
+    transition: all 0.3s ease;
+}
+
+.recording-indicator.active {
+    background: #ef4444;
+    animation: pulse 1s infinite;
+}
+
+.recording-time {
+    font-family: 'Courier New', monospace;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+/* Format and Frame Rate Grids */
+.format-grid,
+.framerate-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.format-btn,
+.framerate-btn {
+    background: var(--button-background);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 16px 12px;
+    color: var(--text-color);
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.format-btn:hover,
+.framerate-btn:hover {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.format-btn.active,
+.framerate-btn.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* Desktop Button */
+.desktop-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.desktop-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Animations */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(0.95);
+    }
+}
+
+/* Hidden utility */
+.hidden {
+    display: none !important;
+}
+
+/* Touch improvements */
+@media (hover: none) and (pointer: coarse) {
+    .preset-btn,
+    .control-btn,
+    .format-btn,
+    .framerate-btn {
+        min-height: 48px;
+    }
+    
+    .connection-btn {
+        min-height: 44px;
+    }
+}

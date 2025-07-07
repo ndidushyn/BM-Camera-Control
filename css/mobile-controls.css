@@ -1,0 +1,356 @@
+/* Mobile-specific control enhancements */
+
+/* Enhanced touch targets */
+.mobile-interface input[type="range"] {
+    height: 12px;
+    background: var(--border-color);
+    border-radius: 6px;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+    position: relative;
+}
+
+.mobile-interface input[type="range"]::-webkit-slider-track {
+    height: 12px;
+    background: var(--border-color);
+    border-radius: 6px;
+}
+
+.mobile-interface input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 32px;
+    height: 32px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 3px 8px rgba(37, 99, 235, 0.3);
+    transition: all 0.2s ease;
+    border: 3px solid white;
+    position: relative;
+}
+
+.mobile-interface input[type="range"]::-webkit-slider-thumb:active {
+    transform: scale(1.2);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.5);
+}
+
+.mobile-interface input[type="range"]::-moz-range-thumb {
+    width: 32px;
+    height: 32px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid white;
+    box-shadow: 0 3px 8px rgba(37, 99, 235, 0.3);
+}
+
+/* Progress indicator for sliders */
+.control-slider {
+    position: relative;
+}
+
+.control-slider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    height: 12px;
+    background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+    border-radius: 6px 0 0 6px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    z-index: 1;
+    transition: width 0.3s ease;
+}
+
+/* Gain slider progress */
+#gain-slider + .control-slider::before,
+.control-slider:has(#gain-slider)::before {
+    width: calc((var(--gain-value, 0) + 12) / 48 * 100%);
+}
+
+/* Iris slider progress */
+#iris-slider + .control-slider::before,
+.control-slider:has(#iris-slider)::before {
+    width: calc((var(--iris-value, 400) - 140) / (2048 - 140) * 100%);
+}
+
+/* WB Temperature slider progress */
+#wb-temp-slider + .control-slider::before,
+.control-slider:has(#wb-temp-slider)::before {
+    width: calc((var(--wb-temp-value, 5600) - 2500) / (10000 - 2500) * 100%);
+}
+
+/* Tint slider progress */
+#tint-slider + .control-slider::before,
+.control-slider:has(#tint-slider)::before {
+    width: calc((var(--tint-value, 0) + 50) / 100 * 100%);
+}
+
+/* Focus slider progress */
+#focus-slider + .control-slider::before,
+.control-slider:has(#focus-slider)::before {
+    width: calc(var(--focus-value, 50) * 1%);
+}
+
+/* Zoom slider progress */
+#zoom-slider + .control-slider::before,
+.control-slider:has(#zoom-slider)::before {
+    width: calc((var(--zoom-value, 100) - 100) / (1600 - 100) * 100%);
+}
+
+/* Shutter slider progress */
+#shutter-slider + .control-slider::before,
+.control-slider:has(#shutter-slider)::before {
+    width: calc((var(--shutter-value, 50) - 24) / (2000 - 24) * 100%);
+}
+
+/* Shutter angle slider progress */
+#shutter-angle-slider + .control-slider::before,
+.control-slider:has(#shutter-angle-slider)::before {
+    width: calc((var(--shutter-angle-value, 180) - 45) / (360 - 45) * 100%);
+}
+
+/* Enhanced preset buttons with haptic feedback */
+.preset-btn,
+.control-btn,
+.format-btn,
+.framerate-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.preset-btn::before,
+.control-btn::before,
+.format-btn::before,
+.framerate-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.preset-btn:active::before,
+.control-btn:active::before,
+.format-btn:active::before,
+.framerate-btn:active::before {
+    left: 100%;
+}
+
+/* Value display enhancements */
+.control-value {
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+}
+
+.control-value::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 30%, rgba(37, 99, 235, 0.1) 50%, transparent 70%);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+}
+
+.control-value.updated::after {
+    transform: translateX(100%);
+}
+
+/* Connection status enhancements */
+.connection-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.connection-btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.3s ease;
+}
+
+.connection-btn:active::after {
+    width: 200px;
+    height: 200px;
+}
+
+/* Record button enhancements */
+.record-button {
+    position: relative;
+    overflow: hidden;
+}
+
+.record-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.4s ease;
+}
+
+.record-button:active::before {
+    width: 120px;
+    height: 120px;
+}
+
+.record-button.recording {
+    position: relative;
+}
+
+.record-button.recording::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+    border-radius: 50%;
+    animation: recordingShimmer 2s infinite;
+}
+
+@keyframes recordingShimmer {
+    0% { transform: translateX(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) rotate(45deg); }
+}
+
+/* Loading states */
+.control-group.loading {
+    opacity: 0.6;
+    pointer-events: none;
+    position: relative;
+}
+
+.control-group.loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(37, 99, 235, 0.1), transparent);
+    animation: loadingShimmer 1.5s infinite;
+}
+
+@keyframes loadingShimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* Error states */
+.control-group.error {
+    border: 1px solid #ef4444;
+    background: rgba(239, 68, 68, 0.05);
+}
+
+.control-group.error .control-value {
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+}
+
+/* Success states */
+.control-group.success {
+    border: 1px solid #10b981;
+    background: rgba(16, 185, 129, 0.05);
+}
+
+.control-group.success .control-value {
+    color: #10b981;
+    background: rgba(16, 185, 129, 0.1);
+}
+
+/* Responsive adjustments for very small screens */
+@media (max-height: 600px) {
+    .mobile-section {
+        padding: 16px 12px;
+    }
+    
+    .control-group {
+        padding: 16px;
+        margin-bottom: 16px;
+    }
+    
+    .section-title {
+        font-size: 20px;
+        margin-bottom: 16px;
+    }
+}
+
+/* Landscape orientation adjustments */
+@media (orientation: landscape) and (max-height: 500px) {
+    .mobile-header {
+        --mobile-header-height: 50px;
+    }
+    
+    .mobile-nav {
+        --mobile-nav-height: 60px;
+    }
+    
+    .mobile-title {
+        font-size: 16px;
+    }
+    
+    .nav-label {
+        display: none;
+    }
+    
+    .nav-icon {
+        font-size: 18px;
+    }
+}
+
+/* Accessibility enhancements */
+@media (prefers-reduced-motion: reduce) {
+    .control-slider::before,
+    .control-value::after,
+    .record-button::before,
+    .record-button::after,
+    .control-group.loading::after {
+        animation: none;
+        transition: none;
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .control-slider input[type="range"]::-webkit-slider-thumb {
+        border: 3px solid var(--text-color);
+    }
+    
+    .preset-btn,
+    .control-btn,
+    .format-btn,
+    .framerate-btn {
+        border: 2px solid var(--border-color);
+    }
+    
+    .preset-btn.active,
+    .control-btn:hover,
+    .format-btn.active,
+    .framerate-btn.active {
+        border: 2px solid var(--primary-color);
+        outline: 2px solid var(--primary-color);
+        outline-offset: 2px;
+    }
+}

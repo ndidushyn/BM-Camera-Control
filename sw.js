@@ -1,7 +1,8 @@
-const CACHE_NAME = 'bm-camera-control-v1.0.1';
+const CACHE_NAME = 'bm-camera-control-v1.0.2';
 const urlsToCache = [
   './',
   './index.html',
+  './mobile.html',
   './start.html',
   './css/base.css',
   './css/header.css',
@@ -16,11 +17,15 @@ const urlsToCache = [
   './css/midi-custom.css',
   './css/toast.css',
   './css/responsive.css',
+  './css/mobile.css',
+  './css/mobile-navigation.css',
+  './css/mobile-controls.css',
   './js/app.js',
   './js/camera-controller.js',
   './js/midi-controller.js',
   './js/platform-detector.js',
   './js/pwa.js',
+  './js/mobile-interface.js',
   './icons/icon-192x192.png',
   './icons/icon-512x512.png'
 ];

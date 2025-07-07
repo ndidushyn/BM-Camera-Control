@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>BM Camera Control - Mobile</title>
+    
+    <!-- Base styles -->
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/toast.css">
+    
+    <!-- Mobile-specific styles -->
+    <link rel="stylesheet" href="css/mobile.css">
+    <link rel="stylesheet" href="css/mobile-navigation.css">
+    <link rel="stylesheet" href="css/mobile-controls.css">
+    
+    <!-- PWA manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="BM Camera">
+    
+    <!-- Icons -->
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192x192.png">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+</head>
+<body class="mobile-interface">
+    <!-- Compact header -->
+    <header class="mobile-header">
+        <div class="mobile-header-content">
+            <h1 class="mobile-title">BM Camera</h1>
+            <div class="header-actions">
+                <button id="desktop-mode" class="desktop-btn" title="Перейти на десктоп версію">
+                    <span>💻</span>
+                </button>
+                <button id="connection-toggle" class="connection-btn disconnected">
+                    <span class="connection-icon">📷</span>
+                    <span class="connection-text">Підключити</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Connection status bar -->
+        <div id="connection-status" class="connection-status hidden">
+            <div class="status-indicator"></div>
+            <span class="status-text">Камера відключена</span>
+            <button id="disconnect-btn" class="disconnect-btn hidden">Відключити</button>
+        </div>
+    </header>
+
+    <!-- Main content area -->
+    <main class="mobile-main">
+        <!-- Light Control Tab -->
+        <section id="light-tab" class="mobile-tab active">
+            <div class="mobile-section">
+                <h2 class="section-title">Освітлення</h2>
+                
+                <!-- Gain Control -->
+                <div class="control-group">
+                    <div class="control-header">
+                        <h3>Gain</h3>
+                        <span id="gain-value" class="control-value">0 dB</span>
+                    </div>
+                    <div class="control-slider">
+                        <input type="range" id="gain-slider" min="-12" max="36" step="1" value="0">
+                    </div>
+                    <div class="quick-presets">
+                        <button class="preset-btn" data-gain="-12">-12</button>
+                        <button class="preset-btn" data-gain="0">0</button>
+                        <button class="preset-btn" data-gain="6">+6</button>
+                        <button class="preset-btn" data-gain="12">+12</button>
+                        <button class="preset-btn" data-gain="18">+18</button>
+                    </div>
+                </div>
+
+                <!-- Iris Control -->
+                <div class="control-group">
+                    <div class="control-header">
+                        <h3>Iris</h3>
+                        <span id="iris-value" class="control-value">f/2.8</span>
+                    </div>
+                    <div class="control-slider">
+                        <input type="range" id="iris-slider" min="140" max="2048" step="1" value="400">
+                    </div>
+                    <div class="quick-presets">
+                        <button class="preset-btn" data-iris="140">f/1.4</button>
+                        <button class="preset-btn" data-iris="200">f/2.0</button>
+                        <button class="preset-btn" data-iris="280">f/2.8</button>
+                        <button class="preset-btn" data-iris="400">f/4.0</button>
+                        <button class="preset-btn" data-iris="560">f/5.6</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- White Balance Tab -->
+        <section id="wb-tab" class="mobile-tab">
+            <div class="mobile-section">
+                <h2 class="section-title">Баланс білого</h2>
+                
+                <!-- White Balance Temperature -->
+                <div class="control-group">
+                    <div class="control-header">
+                        <h3>Температура</h3>
+                        <span id="wb-temp-value" class="control-value">5600K</span>
+                    </div>
+                    <div class="control-slider">
+                        <input type="range" id="wb-temp-slider" min="2500" max="10000" step="50" value="5600">
+                    </div>
+                    <div class="wb-presets">
+                        <button class="preset-btn wb-preset" data-temp="3200">3200K<br><small>Tungsten</small></button>
+                        <button class="preset-btn wb-preset" data-temp="4300">4300K<br><small>Fluorescent</small></button>
+                        <button class="preset-btn wb-preset" data-temp="5600">5600K<br><small>Daylight</small></button>
+                        <button class="preset-btn wb-preset" data-temp="6500">6500K<br><small>Cloudy</small></button>
+                    </div>
+                </div>
+
+                <!-- Tint Control -->
+                <div class="control-group">
+                    <div class="control-header">
+                        <h3>Tint</h3>
+                        <span id="tint-value" class="control-value">0</span>
+                    </div>
+                    <div class="control-slider">
+                        <input type="range" id="tint-slider" min="-50" max="50" step="1" value="0">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Focus Tab -->
+        <section id="focus-tab" class="mobile-tab">
+            <div class="mobile-section">
+                <h2 class="section-title">Фокус</h2>
+                
+                <!-- Focus Control -->
+                <div class="control-group">
+                    <div class="control-header">
+                        <h3>Focus</h3>
+                        <span id="focus-value" class="control-value">50%</span>
+                    </div>
+                    <div class="control-slider">
+                        <input type="range" id="focus-slider" min="0" max="100" step="1" value="50">
+                    </div>
+                    <div class="focus-controls">
+                        <button class="control-btn" id="focus-near">Near</button>
+                        <button class="control-btn" id="autofocus">Auto Focus</button>
+                        <button class="control-btn" id="focus-far">Far</button>
+                    </div>
+                </div>
+
+                <!-- Zoom Control -->
+                <div class="control-group">
+                    <div class="control-header">
+                        <h3>Zoom</h3>
+                        <span id="zoom-value" class="control-value">1.0x</span>
+                    </div>
+                    <div class="control-slider">
+                        <input type="range" id="zoom-slider" min="100" max="1600" step="10" value="100">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Shutter Tab -->
+        <section id="shutter-tab" class="mobile-tab">
+            <div class="mobile-section">
+                <h2 class="section-title">Затвор</h2>
+                
+                <!-- Shutter Speed -->
+                <div class="control-group">
+                    <div class="control-header">
+                        <h3>Shutter Speed</h3>
+                        <span id="shutter-value" class="control-value">1/50</span>
+                    </div>
+                    <div class="control-slider">
+                        <input type="range" id="shutter-slider" min="24" max="2000" step="1" value="50">
+                    </div>
+                    <div class="shutter-presets">
+                        <button class="preset-btn" data-shutter="24">1/24</button>
+                        <button class="preset-btn" data-shutter="25">1/25</button>
+                        <button class="preset-btn" data-shutter="30">1/30</button>
+                        <button class="preset-btn" data-shutter="50">1/50</button>
+                        <button class="preset-btn" data-shutter="60">1/60</button>
+                        <button class="preset-btn" data-shutter="120">1/120</button>
+                    </div>
+                </div>
+
+                <!-- Shutter Angle -->
+                <div class="control-group">
+                    <div class="control-header">
+                        <h3>Shutter Angle</h3>
+                        <span id="shutter-angle-value" class="control-value">180°</span>
+                    </div>
+                    <div class="control-slider">
+                        <input type="range" id="shutter-angle-slider" min="45" max="360" step="1" value="180">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recording Tab -->
+        <section id="record-tab" class="mobile-tab">
+            <div class="mobile-section">
+                <h2 class="section-title">Запис</h2>
+                
+                <!-- Recording Controls -->
+                <div class="recording-controls">
+                    <button id="record-btn" class="record-button">
+                        <span class="record-icon">⏺</span>
+                        <span class="record-text">Старт</span>
+                    </button>
+                    
+                    <div class="recording-status">
+                        <div class="recording-indicator"></div>
+                        <span class="recording-time">00:00:00</span>
+                    </div>
+                </div>
+
+                <!-- Recording Settings -->
+                <div class="control-group">
+                    <h3>Format</h3>
+                    <div class="format-grid">
+                        <button class="format-btn active" data-format="4K">4K</button>
+                        <button class="format-btn" data-format="UHD">UHD</button>
+                        <button class="format-btn" data-format="1080p">1080p</button>
+                        <button class="format-btn" data-format="720p">720p</button>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <h3>Frame Rate</h3>
+                    <div class="framerate-grid">
+                        <button class="framerate-btn" data-fps="24">24fps</button>
+                        <button class="framerate-btn active" data-fps="25">25fps</button>
+                        <button class="framerate-btn" data-fps="30">30fps</button>
+                        <button class="framerate-btn" data-fps="50">50fps</button>
+                        <button class="framerate-btn" data-fps="60">60fps</button>
+                        <button class="framerate-btn" data-fps="120">120fps</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="mobile-nav">
+        <button class="nav-item active" data-tab="light">
+            <span class="nav-icon">💡</span>
+            <span class="nav-label">Світло</span>
+        </button>
+        <button class="nav-item" data-tab="wb">
+            <span class="nav-icon">🌡️</span>
+            <span class="nav-label">WB</span>
+        </button>
+        <button class="nav-item" data-tab="focus">
+            <span class="nav-icon">🎯</span>
+            <span class="nav-label">Фокус</span>
+        </button>
+        <button class="nav-item" data-tab="shutter">
+            <span class="nav-icon">📷</span>
+            <span class="nav-label">Затвор</span>
+        </button>
+        <button class="nav-item" data-tab="record">
+            <span class="nav-icon">⏺️</span>
+            <span class="nav-label">Запис</span>
+        </button>
+    </nav>
+
+    <!-- Toast notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="js/camera-controller.js"></script>
+    <script src="js/mobile-interface.js"></script>
+    <script src="js/platform-detector.js"></script>
+    <script src="js/pwa.js"></script>
+</body>
+</html>

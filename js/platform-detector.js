@@ -66,8 +66,19 @@ class PlatformDetector {
     
     // Check if running on mobile
     isMobile() {
-        return /android|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(this.userAgent) ||
+        const isMobileDevice = /android|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(this.userAgent) ||
                (window.matchMedia && window.matchMedia('(max-width: 768px)').matches);
+        
+        // Auto-redirect to mobile interface if on mobile device
+        if (isMobileDevice && !window.location.pathname.includes('mobile.html') && !window.location.search.includes('desktop=1')) {
+            console.log('📱 Mobile device detected, redirecting to mobile interface');
+            const currentParams = window.location.search;
+            const newParams = currentParams ? currentParams + '&mobile=1' : '?mobile=1';
+            window.location.replace('./mobile.html' + newParams);
+            return true;
+        }
+        
+        return isMobileDevice;
     }
     
     // Check if running as PWA

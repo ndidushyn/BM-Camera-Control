@@ -74,10 +74,22 @@
       ]
     },
     {
-      "name": "MIDI контроль",
-      "short_name": "MIDI",
-      "description": "Відкрити MIDI контролер",
-      "url": "./?tab=midi",
+      "name": "Мобільний інтерфейс",
+      "short_name": "Мобільний",
+      "description": "Відкрити мобільний інтерфейс",
+      "url": "./mobile.html",
+      "icons": [
+        {
+          "src": "icons/icon-96x96.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Десктоп версія",
+      "short_name": "Десктоп",
+      "description": "Відкрити повну версію",
+      "url": "./?desktop=1",
       "icons": [
         {
           "src": "icons/icon-96x96.png",

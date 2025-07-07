@@ -1,0 +1,200 @@
+/* Mobile Bottom Navigation */
+.mobile-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: var(--panel-background);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: var(--mobile-nav-height);
+    padding-bottom: var(--mobile-safe-area-bottom);
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.nav-item {
+    background: none;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    color: var(--text-muted);
+    min-width: 60px;
+    gap: 4px;
+    position: relative;
+}
+
+.nav-item:hover {
+    background: rgba(37, 99, 235, 0.1);
+    color: var(--primary-color);
+}
+
+.nav-item.active {
+    background: var(--primary-color);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.nav-item.active::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 3px;
+    background: var(--primary-color);
+    border-radius: 2px;
+}
+
+.nav-icon {
+    font-size: 20px;
+    line-height: 1;
+    transition: all 0.3s ease;
+}
+
+.nav-item.active .nav-icon {
+    transform: scale(1.1);
+}
+
+.nav-label {
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 1;
+    white-space: nowrap;
+    opacity: 0.9;
+}
+
+.nav-item.active .nav-label {
+    opacity: 1;
+    font-weight: 600;
+}
+
+/* Navigation hover effects for touch devices */
+@media (hover: none) and (pointer: coarse) {
+    .nav-item:active {
+        transform: scale(0.95);
+        transition: transform 0.1s ease;
+    }
+    
+    .nav-item.active:active {
+        transform: translateY(-2px) scale(0.95);
+    }
+}
+
+/* Alternative navigation styles for different themes */
+.mobile-nav.glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+.mobile-nav.minimal {
+    background: transparent;
+    border-top: none;
+    box-shadow: none;
+}
+
+.mobile-nav.minimal .nav-item {
+    background: var(--panel-background);
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.mobile-nav.minimal .nav-item.active {
+    transform: translateY(-8px);
+}
+
+.mobile-nav.minimal .nav-label {
+    display: none;
+}
+
+/* Navigation animation */
+@keyframes navItemAppear {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.nav-item {
+    animation: navItemAppear 0.5s ease;
+}
+
+.nav-item:nth-child(1) { animation-delay: 0.1s; }
+.nav-item:nth-child(2) { animation-delay: 0.15s; }
+.nav-item:nth-child(3) { animation-delay: 0.2s; }
+.nav-item:nth-child(4) { animation-delay: 0.25s; }
+.nav-item:nth-child(5) { animation-delay: 0.3s; }
+
+/* Badge for notifications */
+.nav-item .badge {
+    position: absolute;
+    top: 2px;
+    right: 8px;
+    background: #ef4444;
+    color: white;
+    font-size: 10px;
+    font-weight: 600;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--panel-background);
+}
+
+/* Haptic feedback indicator */
+.nav-item.haptic-feedback {
+    animation: hapticPulse 0.2s ease;
+}
+
+@keyframes hapticPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+    .nav-item,
+    .nav-icon,
+    .nav-label {
+        transition: none;
+        animation: none;
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .mobile-nav {
+        border-top: 2px solid var(--text-color);
+    }
+    
+    .nav-item {
+        border: 1px solid var(--border-color);
+    }
+    
+    .nav-item.active {
+        border-color: var(--primary-color);
+        outline: 2px solid var(--primary-color);
+    }
+}

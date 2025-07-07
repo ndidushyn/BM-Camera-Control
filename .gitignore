@@ -1,1 +1,19 @@
+# Backup directories
 /backups
+backup_*/
+
+# PWA generated files
+*.png.tmp
+temp_icon_*.html
+
+# macOS
+.DS_Store
+
+# Editor files
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*

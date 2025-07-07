@@ -5,8 +5,32 @@
     <link rel="stylesheet" href="css/toast.css">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Blackmagic Camera Control Center</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="Professional camera control interface for Blackmagic cameras with MIDI support">
+    <meta name="keywords" content="blackmagic, camera, control, midi, professional, video, production">
+    <meta name="author" content="BM Camera Control">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="BM Camera Control">
+    <meta name="application-name" content="BM Camera Control">
+    <meta name="msapplication-TileColor" content="#2563eb">
+    <meta name="msapplication-navbutton-color" content="#2563eb">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="icons/icon-192x192.png">
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/icon-16x16.png">
     
     <!-- Modular CSS Files -->
     <link rel="stylesheet" href="css/base.css">
@@ -22,6 +46,7 @@
     <link rel="stylesheet" href="css/toast.css">
     <link rel="stylesheet" href="css/responsive.css">
     
+    <!-- Fallback icon -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎥</text></svg>">
 </head>
 <body>
@@ -821,6 +846,7 @@
 
     <script src="js/camera-controller.js"></script>
     <script src="js/midi-controller.js"></script>
+    <script src="js/pwa.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>

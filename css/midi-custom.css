@@ -1,0 +1,376 @@
+/* MIDI Custom Buttons Styles */
+
+/* Custom Buttons Container */
+.midi-custom-container {
+    background: var(--panel-bg);
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.midi-custom-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.midi-custom-title {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.midi-custom-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* Custom Buttons Grid */
+.midi-custom-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.midi-custom-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-secondary);
+    background: var(--input-bg);
+    border-radius: 8px;
+    border: 2px dashed var(--border-color);
+}
+
+.midi-custom-empty-icon {
+    font-size: 2rem;
+    margin-bottom: 12px;
+    opacity: 0.5;
+}
+
+/* Custom Button Card */
+.midi-custom-button-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 16px;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.midi-custom-button-card:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.midi-custom-status {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--success-color);
+}
+
+.midi-custom-status.inactive {
+    background: var(--warning-color);
+}
+
+.midi-custom-button-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.midi-custom-button-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 1.1em;
+    margin-right: 12px;
+}
+
+.midi-custom-button-actions {
+    display: flex;
+    gap: 4px;
+}
+
+.midi-custom-action-btn {
+    background: none;
+    border: none;
+    padding: 4px 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.2s ease;
+}
+
+.midi-custom-action-btn:hover {
+    background: var(--hover-bg);
+}
+
+.midi-custom-action-btn.danger:hover {
+    background: var(--danger-color);
+    color: white;
+}
+
+.midi-custom-button-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.midi-custom-info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.midi-custom-info-label {
+    font-size: 0.85em;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.midi-custom-info-value {
+    font-size: 0.9em;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.midi-custom-info-value.unassigned {
+    color: var(--warning-color);
+    font-style: italic;
+}
+
+/* Modal Styles */
+.midi-custom-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.75);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.midi-custom-modal.active {
+    display: flex;
+}
+
+.midi-custom-modal-content {
+    background: rgba(51, 50, 50, 1);
+    border-radius: 12px;
+    padding: 24px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    position: relative;
+    z-index: 1001;
+}
+
+.midi-custom-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.midi-custom-modal-title {
+    font-size: 1.3em;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.midi-custom-modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: var(--text-secondary);
+    padding: 4px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.midi-custom-modal-close:hover {
+    background: var(--hover-bg);
+}
+
+/* Form Styles */
+.midi-custom-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.midi-custom-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.midi-custom-form-label {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.9em;
+}
+
+.midi-custom-form-input,
+.midi-custom-form-select {
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--input-bg);
+    color: var(--text-primary);
+    font-size: 0.9em;
+    transition: border-color 0.2s ease;
+}
+
+.midi-custom-form-input:focus,
+.midi-custom-form-select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.2);
+}
+
+.midi-custom-form-help {
+    font-size: 0.8em;
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+
+/* Assignment Panel */
+.midi-custom-assign-panel {
+    padding: 16px;
+    background: var(--input-bg);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.midi-custom-assign-status {
+    margin-top: 8px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.85em;
+    text-align: center;
+}
+
+.midi-custom-assign-status.success {
+    background: rgba(var(--success-rgb), 0.1);
+    color: var(--success-color);
+    border: 1px solid rgba(var(--success-rgb), 0.3);
+}
+
+.midi-custom-assign-status.waiting {
+    background: rgba(var(--warning-rgb), 0.1);
+    color: var(--warning-color);
+    border: 1px solid rgba(var(--warning-rgb), 0.3);
+}
+
+.midi-custom-cc-info {
+    margin-top: 12px;
+    padding: 8px 12px;
+    background: rgba(var(--accent-rgb), 0.1);
+    border: 1px solid rgba(var(--accent-rgb), 0.3);
+    border-radius: 6px;
+    display: none;
+}
+
+.midi-custom-cc-display {
+    font-weight: 600;
+    color: var(--accent-color);
+}
+
+/* Modal Actions */
+.midi-custom-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-color);
+}
+
+.midi-custom-modal-actions .btn {
+    min-width: 80px;
+}
+
+/* Learning Indicator */
+.midi-learning-indicator {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--accent-color);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    display: none;
+    z-index: 1001;
+}
+
+.midi-learning-indicator.active {
+    display: block;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .midi-custom-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .midi-custom-modal-content {
+        margin: 20px;
+        width: calc(100% - 40px);
+        padding: 20px;
+    }
+    
+    .midi-custom-button-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .midi-custom-button-actions {
+        align-self: flex-end;
+    }
+}
+
+/* Dark Theme Support */
+[data-theme="dark"] .midi-custom-modal {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+[data-theme="dark"] .midi-custom-button-card {
+    background: var(--card-bg-dark, #2a2a2a);
+    border-color: var(--border-color-dark, #444);
+}
+
+[data-theme="dark"] .midi-custom-modal-content {
+    background: var(--panel-bg-dark, #1e1e1e);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+}

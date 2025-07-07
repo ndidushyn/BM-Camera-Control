@@ -1,0 +1,199 @@
+/* Button Styles */
+.btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    background: linear-gradient(135deg, #007acc 0%, #005999 100%);
+    color: white;
+    border: 2px solid transparent;
+}
+
+.btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,122,204,0.4);
+}
+
+.btn:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.btn.primary {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    border-color: #28a745;
+}
+
+.btn.primary:hover:not(:disabled) {
+    box-shadow: 0 6px 20px rgba(40,167,69,0.4);
+}
+
+.btn.danger {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    border-color: #dc3545;
+}
+
+.btn.danger:hover:not(:disabled) {
+    box-shadow: 0 6px 20px rgba(220,53,69,0.4);
+}
+
+.btn.secondary {
+    background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+    border-color: #6c757d;
+}
+
+.btn.secondary:hover:not(:disabled) {
+    box-shadow: 0 6px 20px rgba(108,117,125,0.4);
+}
+
+.btn.compact {
+    padding: 10px 16px;
+    font-size: 13px;
+    min-width: auto;
+}
+
+/* Modern Button Styles */
+.btn-modern {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.9em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-modern:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: left 0.5s;
+}
+
+.btn-modern:hover:before {
+    left: 100%;
+}
+
+.btn-modern.secondary {
+    background: rgba(255,255,255,0.1);
+    color: #ffffff;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.btn-modern.secondary:hover:not(:disabled) {
+    background: rgba(255,255,255,0.15);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.btn-modern.success {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: #ffffff;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.btn-modern.success:hover:not(:disabled) {
+    background: linear-gradient(135deg, #218838, #1ba085);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(40,167,69,0.3);
+}
+
+.btn-modern:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.btn-modern.full-width {
+    width: 100%;
+    justify-content: center;
+}
+
+.btn-icon {
+    font-size: 1.1em;
+}
+
+.btn-text {
+    white-space: nowrap;
+}
+
+/* Button Groups */
+.button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+/* Preset Buttons */
+.gain-presets, .shutter-presets, .wb-presets, .iris-presets {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+    gap: 6px;
+    margin: 10px 0;
+}
+
+.gain-btn, .shutter-btn, .wb-btn, .iris-btn {
+    padding: 6px 10px;
+    border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 6px;
+    background: rgba(255,255,255,0.1);
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.gain-btn:hover:not(:disabled), 
+.shutter-btn:hover:not(:disabled), 
+.wb-btn:hover:not(:disabled), 
+.iris-btn:hover:not(:disabled) {
+    background: rgba(0,212,255,0.3);
+    border-color: #00d4ff;
+    transform: scale(1.05);
+}
+
+.gain-btn.active,
+.shutter-btn.active,
+.wb-btn.active,
+.iris-btn.active {
+    background: linear-gradient(45deg, #00d4ff, #0099cc);
+    border-color: #00d4ff;
+    color: #ffffff;
+}
+
+/* Responsive buttons */
+@media (max-width: 768px) {
+    .button-group {
+        justify-content: center;
+    }
+    
+    .gain-presets, .shutter-presets, .wb-presets, .iris-presets {
+        grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+    }
+}

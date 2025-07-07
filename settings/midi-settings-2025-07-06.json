@@ -1,0 +1,87 @@
+{
+  "version": "1.0",
+  "timestamp": "2025-07-06T15:31:41.865Z",
+  "device": {
+    "name": "SAMSUNG_Android",
+    "manufacturer": "SAMSUNG",
+    "id": "316836817"
+  },
+  "mappings": [
+    {
+      "midiCommand": "176-21",
+      "function": "light0db",
+      "description": "Світло 0 dB"
+    },
+    {
+      "midiCommand": "176-22",
+      "function": "light2db",
+      "description": "Світло 2 dB"
+    },
+    {
+      "midiCommand": "176-23",
+      "function": "light4db",
+      "description": "Світло 4 dB"
+    },
+    {
+      "midiCommand": "176-24",
+      "function": "light6db",
+      "description": "Світло 6 dB"
+    },
+    {
+      "midiCommand": "176-25",
+      "function": "light8db",
+      "description": "Світло 8 dB"
+    },
+    {
+      "midiCommand": "176-26",
+      "function": "light10db",
+      "description": "Світло 10 dB"
+    },
+    {
+      "midiCommand": "176-27",
+      "function": "light12db",
+      "description": "Світло 12 dB"
+    },
+    {
+      "midiCommand": "176-28",
+      "function": "light14db",
+      "description": "Світло 14 dB"
+    },
+    {
+      "midiCommand": "176-29",
+      "function": "light16db",
+      "description": "Світло 16 dB"
+    },
+    {
+      "midiCommand": "176-30",
+      "function": "light18db",
+      "description": "Світло 18 dB"
+    },
+    {
+      "midiCommand": "176-31",
+      "function": "light20db",
+      "description": "Світло 20 dB"
+    },
+    {
+      "midiCommand": "176-14",
+      "function": "light22db",
+      "description": "Світло 22 dB"
+    },
+    {
+      "midiCommand": "176-15",
+      "function": "light24db",
+      "description": "Світло 24 dB"
+    },
+    {
+      "midiCommand": "176-35",
+      "function": "light26db",
+      "description": "Світло 26 dB"
+    }
+  ],
+  "settings": {
+    "channel": "0",
+    "sensitivity": "medium",
+    "learnMode": false
+  },
+  "notes": "Експортовано 06.07.2025, 18:31:41 з Blackmagic Camera Control"
+}

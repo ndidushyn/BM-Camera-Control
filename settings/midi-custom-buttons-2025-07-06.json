@@ -1,0 +1,13 @@
+{
+  "version": "1.0",
+  "timestamp": "2025-07-06T19:36:58.863Z",
+  "customButtons": [
+    {
+      "id": "custom_1751830617220_3foy5cwwe",
+      "name": "4200К",
+      "function": "whiteBalance",
+      "value": 4200,
+      "cc": 52
+    }
+  ]
+}

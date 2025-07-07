@@ -1,0 +1,295 @@
+/* Color-specific slider backgrounds */
+.control-section:has(#lift-red-slider) input[type="range"],
+.control-section:has(#gamma-red-slider) input[type="range"],
+.control-section:has(#color-gain-red-slider) input[type="range"],
+.control-section:has(#offset-red-slider) input[type="range"] {
+    background: linear-gradient(90deg, #800000, #ff0000, #ff8080);
+}
+
+.control-section:has(#lift-green-slider) input[type="range"],
+.control-section:has(#gamma-green-slider) input[type="range"],
+.control-section:has(#color-gain-green-slider) input[type="range"],
+.control-section:has(#offset-green-slider) input[type="range"] {
+    background: linear-gradient(90deg, #008000, #00ff00, #80ff80);
+}
+
+.control-section:has(#lift-blue-slider) input[type="range"],
+.control-section:has(#gamma-blue-slider) input[type="range"],
+.control-section:has(#color-gain-blue-slider) input[type="range"],
+.control-section:has(#offset-blue-slider) input[type="range"] {
+    background: linear-gradient(90deg, #000080, #0000ff, #8080ff);
+}
+
+.control-section:has(#lift-luma-slider) input[type="range"],
+.control-section:has(#gamma-luma-slider) input[type="range"],
+.control-section:has(#color-gain-luma-slider) input[type="range"],
+.control-section:has(#offset-luma-slider) input[type="range"],
+.control-section:has(#contrast-pivot-slider) input[type="range"],
+.control-section:has(#contrast-adjust-slider) input[type="range"],
+.control-section:has(#luma-contribution-slider) input[type="range"] {
+    background: linear-gradient(90deg, #404040, #ffffff, #ffffff);
+}
+
+.control-section:has(#color-hue-slider) input[type="range"] {
+    background: linear-gradient(90deg, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);
+}
+
+.control-section:has(#color-saturation-slider) input[type="range"] {
+    background: linear-gradient(90deg, #808080, #ff4757);
+}
+
+/* Color correction section styling */
+.control-panel h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.control-section h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    color: #ffffff;
+    font-size: 1.1em;
+}
+
+/* Enhanced White Balance Controls */
+.wb-slider-control {
+    margin: 15px 0;
+    padding: 15px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.slider-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.slider-container label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #00d4ff;
+}
+
+#wb-slider {
+    width: 100%;
+    height: 8px;
+    background: linear-gradient(to right, 
+        #ff6b47 0%,    /* 2500K - теплий */
+        #ffab47 20%,   /* 3200K */
+        #ffd147 40%,   /* 4300K */
+        #ffffff 60%,   /* 5600K - нейтральний */
+        #b3d9ff 80%,   /* 6500K */
+        #7fb8ff 100%   /* 10000K - холодний */
+    );
+    border-radius: 4px;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+#wb-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #ffffff;
+    cursor: pointer;
+    border: 3px solid #00d4ff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+#wb-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #ffffff;
+    cursor: pointer;
+    border: 3px solid #00d4ff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.slider-value-display {
+    text-align: center;
+    margin-top: 5px;
+}
+
+#wb-slider-value {
+    font-size: 16px;
+    font-weight: 700;
+    color: #00d4ff;
+    background: rgba(0, 212, 255, 0.1);
+    padding: 5px 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(0, 212, 255, 0.3);
+}
+
+.slider-markers {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    padding: 0 10px;
+}
+
+.marker {
+    font-size: 11px;
+    color: rgba(255,255,255,0.6);
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.marker:hover {
+    color: #00d4ff;
+}
+
+/* Named Presets */
+.wb-named-presets {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.wb-preset-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 8px;
+    background: rgba(255,255,255,0.08);
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-height: 70px;
+    justify-content: center;
+}
+
+.wb-preset-btn:hover:not(:disabled) {
+    background: rgba(0, 212, 255, 0.15);
+    border-color: rgba(0, 212, 255, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 212, 255, 0.2);
+}
+
+.wb-preset-btn.active {
+    background: rgba(0, 212, 255, 0.2);
+    border-color: #00d4ff;
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
+}
+
+.preset-icon {
+    font-size: 18px;
+    margin-bottom: 4px;
+}
+
+.preset-name {
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 2px;
+}
+
+.preset-value {
+    font-size: 10px;
+    color: rgba(255,255,255,0.7);
+    font-weight: 500;
+}
+
+/* Quick Adjustment Buttons */
+.wb-quick-adjust {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 15px 0;
+    flex-wrap: wrap;
+}
+
+.wb-adjust-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 12px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 6px;
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 60px;
+}
+
+.wb-adjust-btn:hover:not(:disabled) {
+    background: rgba(255,255,255,0.1);
+    border-color: rgba(255,255,255,0.3);
+    transform: translateY(-1px);
+}
+
+.adjust-icon {
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+.adjust-text {
+    font-size: 10px;
+    font-weight: 600;
+}
+
+/* Responsive adjustments for WB controls */
+@media (max-width: 768px) {
+    .wb-named-presets {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+    
+    .wb-preset-btn {
+        min-height: 60px;
+        padding: 8px 6px;
+    }
+    
+    .preset-icon {
+        font-size: 16px;
+    }
+    
+    .preset-name {
+        font-size: 10px;
+    }
+    
+    .wb-quick-adjust {
+        gap: 6px;
+    }
+    
+    .wb-adjust-btn {
+        min-width: 50px;
+        padding: 6px 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .wb-named-presets {
+        grid-template-columns: 1fr;
+    }
+    
+    .wb-preset-btn {
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 8px;
+        min-height: 50px;
+        padding: 10px;
+    }
+    
+    .preset-icon {
+        margin-bottom: 0;
+    }
+    
+    .preset-name {
+        margin-bottom: 0;
+        text-align: left;
+        flex: 1;
+    }
+}

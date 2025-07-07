@@ -1,0 +1,67 @@
+{
+  "version": "1.0",
+  "timestamp": "2025-07-06T18:35:00.000Z",
+  "device": {
+    "name": "MIDI Controller",
+    "manufacturer": "Generic",
+    "id": ""
+  },
+  "mappings": [
+    {
+      "midiCommand": "176-1",
+      "function": "gain",
+      "description": "Плавне керування gain"
+    },
+    {
+      "midiCommand": "176-2", 
+      "function": "shutter",
+      "description": "Плавне керування витримки"
+    },
+    {
+      "midiCommand": "176-3",
+      "function": "whiteBalance", 
+      "description": "Плавне керування балансу білого"
+    },
+    {
+      "midiCommand": "176-4",
+      "function": "focus",
+      "description": "Плавне керування фокусу"
+    },
+    {
+      "midiCommand": "144-36",
+      "function": "light0db",
+      "description": "Світло 0 dB"
+    },
+    {
+      "midiCommand": "144-37",
+      "function": "light6db", 
+      "description": "Світло 6 dB"
+    },
+    {
+      "midiCommand": "144-38",
+      "function": "light12db",
+      "description": "Світло 12 dB"
+    },
+    {
+      "midiCommand": "144-39",
+      "function": "light18db",
+      "description": "Світло 18 dB"
+    },
+    {
+      "midiCommand": "144-40",
+      "function": "light26db",
+      "description": "Світло 26 dB"
+    },
+    {
+      "midiCommand": "144-41",
+      "function": "record",
+      "description": "Запис ON/OFF"
+    }
+  ],
+  "settings": {
+    "channel": "0",
+    "sensitivity": "medium",
+    "learnMode": false
+  },
+  "notes": "Приклад базових налаштувань для MIDI контролера. CC1-4 для плавного керування, кнопки 36-41 для фіксованих функцій."
+}

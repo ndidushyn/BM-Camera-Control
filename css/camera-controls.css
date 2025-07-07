@@ -1,0 +1,108 @@
+/* Focus Controls */
+.focus-controls {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+/* Transport Controls */
+.transport-controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.recording-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 15px 0;
+    padding: 15px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 10px;
+}
+
+.recording-indicator {
+    font-size: 1.5em;
+}
+
+/* System Information */
+.system-info, .media-info {
+    background: rgba(0,0,0,0.2);
+    border-radius: 8px;
+    padding: 15px;
+    margin: 15px 0;
+}
+
+/* Activity Log */
+.activity-log {
+    background: #000;
+    border: 2px solid #333;
+    border-radius: 10px;
+    padding: 20px;
+    height: 250px;
+    overflow-y: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.log-entry {
+    margin: 5px 0;
+    padding: 5px 0;
+    display: flex;
+    gap: 10px;
+}
+
+.log-time {
+    color: #6c757d;
+    min-width: 80px;
+}
+
+.log-message {
+    flex: 1;
+}
+
+.log-entry.info .log-message {
+    color: #00d4ff;
+}
+
+.log-entry.success .log-message {
+    color: #28a745;
+}
+
+.log-entry.error .log-message {
+    color: #dc3545;
+}
+
+.log-entry.warning .log-message {
+    color: #ffc107;
+}
+
+/* Camera controls responsive */
+@media (max-width: 768px) {
+    .focus-controls {
+        flex-direction: column;
+    }
+    
+    .transport-controls {
+        flex-direction: column;
+    }
+    
+    .connection-content {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+    
+    .connection-input {
+        min-width: auto;
+    }
+    
+    .connection-buttons {
+        justify-content: center;
+    }
+}

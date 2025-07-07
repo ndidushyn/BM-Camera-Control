@@ -1,0 +1,32 @@
+{
+  "version": "1.0",
+  "timestamp": "2025-07-06T18:30:00.000Z",
+  "device": {
+    "name": "Ваш MIDI пристрій",
+    "manufacturer": "",
+    "channel": "0"
+  },
+  "mappings": [
+    {
+      "midiCommand": "176-64",
+      "function": "gain",
+      "description": "Плавне керування gain"
+    },
+    {
+      "midiCommand": "144-60",
+      "function": "light0db", 
+      "description": "Світло 0 dB"
+    },
+    {
+      "midiCommand": "144-61",
+      "function": "light6db",
+      "description": "Світло 6 dB"
+    }
+  ],
+  "settings": {
+    "sensitivity": "medium",
+    "learnMode": false,
+    "autoSave": true
+  },
+  "notes": "Приклад файлу налаштувань MIDI. Скопіюйте цей файл як midi-settings.json та налаштуйте під свої потреби."
+}

@@ -1,0 +1,637 @@
+/* MIDI Control Styles */
+.midi-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* MIDI Header */
+.midi-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(20px);
+    border-radius: 16px;
+    padding: 20px 25px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.midi-header h2 {
+    margin: 0;
+    font-size: 1.8em;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.midi-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.midi-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    animation: blink 2s infinite;
+}
+
+.midi-indicator.offline {
+    background: #dc3545;
+}
+
+.midi-indicator.available {
+    background: #ffc107;
+}
+
+.midi-indicator.connected {
+    background: #28a745;
+}
+
+.midi-indicator.error {
+    background: #dc3545;
+}
+
+/* MIDI Connection Panel */
+.midi-connection-panel {
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(15px);
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.midi-connection-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.midi-connection-header h3 {
+    margin: 0;
+    font-size: 1.2em;
+    font-weight: 500;
+    color: #ffffff;
+}
+
+.midi-devices-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.midi-device-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 16px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.midi-device-card:hover {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(74, 144, 226, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+}
+
+.midi-device-card.connected {
+    background: linear-gradient(135deg, rgba(40,167,69,0.15), rgba(40,167,69,0.05));
+    border-color: rgba(40,167,69,0.4);
+}
+
+.midi-device-card.connecting {
+    background: linear-gradient(135deg, rgba(255,193,7,0.15), rgba(255,193,7,0.05));
+    border-color: rgba(255,193,7,0.4);
+}
+
+.midi-device-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.midi-device-icon {
+    font-size: 1.5em;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+.midi-device-name {
+    font-size: 1.1em;
+    font-weight: 500;
+    color: #ffffff;
+    margin: 0;
+}
+
+.midi-device-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.85em;
+    color: rgba(255,255,255,0.7);
+}
+
+.midi-device-manufacturer {
+    font-weight: 400;
+}
+
+.midi-device-type {
+    font-style: italic;
+}
+
+.midi-device-status {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-size: 0.75em;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.midi-device-status.available {
+    background: rgba(40,167,69,0.2);
+    color: #28a745;
+    border: 1px solid rgba(40,167,69,0.3);
+}
+
+.midi-device-status.connected {
+    background: rgba(40,167,69,0.3);
+    color: #ffffff;
+    border: 1px solid rgba(40,167,69,0.5);
+}
+
+.midi-device-status.connecting {
+    background: rgba(255,193,7,0.2);
+    color: #ffc107;
+    border: 1px solid rgba(255,193,7,0.3);
+}
+
+.midi-device-placeholder {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px 20px;
+    color: rgba(255,255,255,0.5);
+}
+
+.placeholder-icon {
+    font-size: 3em;
+    margin-bottom: 10px;
+    opacity: 0.5;
+}
+
+.placeholder-text {
+    font-size: 1.1em;
+    font-weight: 400;
+}
+
+.midi-connection-actions {
+    text-align: center;
+}
+
+.midi-connection-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.midi-device-select {
+    flex: 1;
+    min-width: 200px;
+    padding: 12px 16px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 10px;
+    background: rgba(255,255,255,0.05);
+    color: #ffffff;
+    font-size: 0.9em;
+    transition: all 0.2s ease;
+}
+
+.midi-device-select:focus {
+    outline: none;
+    border-color: #0099cc;
+    background: rgba(255,255,255,0.08);
+    box-shadow: 0 0 0 3px rgba(0,153,204,0.1);
+}
+
+/* MIDI Mappings Grid */
+.midi-mappings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.midi-mapping-panel {
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(15px);
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.midi-mapping-panel h3 {
+    margin: 0 0 15px 0;
+    font-size: 1.2em;
+    font-weight: 500;
+    color: #ffffff;
+}
+
+.midi-mapping-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.midi-mapping-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.midi-mapping-item label {
+    flex: 1;
+    font-weight: 500;
+    color: #ffffff;
+    font-size: 0.9em;
+}
+
+.midi-assign-btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: #ffffff;
+    font-size: 0.8em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 80px;
+}
+
+.midi-assign-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #0056b3, #004085);
+    transform: scale(1.05);
+}
+
+.midi-assign-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.midi-cc-display {
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    color: #00d4ff;
+    background: rgba(0, 212, 255, 0.1);
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    min-width: 40px;
+    text-align: center;
+    font-size: 0.8em;
+}
+
+.midi-clear-btn {
+    padding: 4px 8px;
+    border: none;
+    border-radius: 4px;
+    background: rgba(220, 53, 69, 0.8);
+    color: #ffffff;
+    font-size: 0.8em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.midi-clear-btn:hover {
+    background: rgba(220, 53, 69, 1);
+    transform: scale(1.1);
+}
+
+/* MIDI Settings Panel */
+.midi-settings-panel {
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(15px);
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.midi-settings-panel h3 {
+    margin: 0 0 15px 0;
+    font-size: 1.2em;
+    font-weight: 500;
+    color: #ffffff;
+}
+
+.midi-settings-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.midi-setting-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.midi-setting-item label {
+    font-weight: 500;
+    color: #ffffff;
+    font-size: 0.9em;
+    min-width: 120px;
+}
+
+.midi-select {
+    padding: 8px 12px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 6px;
+    background: rgba(255,255,255,0.05);
+    color: #ffffff;
+    font-size: 0.8em;
+    min-width: 120px;
+}
+
+.midi-checkbox {
+    width: 16px;
+    height: 16px;
+    accent-color: #00d4ff;
+}
+
+.midi-help-text {
+    font-size: 0.7em;
+    color: rgba(255,255,255,0.6);
+    margin-left: 30px;
+}
+
+.midi-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+/* MIDI Activity Panel */
+.midi-activity-panel {
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(15px);
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.midi-activity-panel h3 {
+    margin: 0 0 15px 0;
+    font-size: 1.2em;
+    font-weight: 500;
+    color: #ffffff;
+}
+
+.midi-activity-log {
+    background: rgba(0,0,0,0.3);
+    border-radius: 8px;
+    padding: 15px;
+    height: 200px;
+    overflow-y: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.midi-log-entry {
+    margin: 4px 0;
+    padding: 4px 0;
+    display: flex;
+    gap: 8px;
+    color: rgba(255,255,255,0.8);
+}
+
+.midi-log-entry.info {
+    color: #00d4ff;
+}
+
+.midi-log-entry.success {
+    color: #28a745;
+}
+
+.midi-log-entry.error {
+    color: #dc3545;
+}
+
+.midi-log-entry.warning {
+    color: #ffc107;
+}
+
+.midi-log-entry.learn {
+    color: #ff6b47;
+}
+
+.midi-log-entry.execute {
+    color: #20c997;
+}
+
+.midi-log-entry.midi {
+    color: #6c5ce7;
+}
+
+.midi-log-entry .timestamp {
+    color: #6c757d;
+    min-width: 70px;
+    font-size: 11px;
+}
+
+.midi-log-entry .message {
+    flex: 1;
+}
+
+/* MIDI Function Dialog */
+.midi-function-dialog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+
+.dialog-content {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(20px);
+    border-radius: 16px;
+    padding: 30px;
+    border: 1px solid rgba(255,255,255,0.2);
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.dialog-content h3 {
+    margin: 0 0 20px 0;
+    color: #ffffff;
+    text-align: center;
+}
+
+.function-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.function-btn {
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.1);
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9em;
+}
+
+.function-btn:hover {
+    background: rgba(0,212,255,0.2);
+    border-color: #00d4ff;
+    transform: translateY(-2px);
+}
+
+.dialog-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Responsive MIDI styles */
+@media (max-width: 768px) {
+    .midi-mappings-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .midi-connection-content {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .midi-device-select {
+        min-width: auto;
+    }
+    
+    .midi-mapping-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+    
+    .midi-setting-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 5px;
+    }
+    
+    .midi-setting-item label {
+        min-width: auto;
+    }
+    
+    .midi-actions {
+        flex-direction: column;
+    }
+    
+    .function-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Backup Settings */
+.midi-setting-group {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.midi-setting-group h4 {
+    margin: 0 0 15px 0;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.midi-backup-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.midi-backup-actions .btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.midi-backup-actions .btn.success {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+}
+
+.midi-backup-actions .btn.success:hover {
+    background: linear-gradient(135deg, #218838, #1da88a);
+    transform: translateY(-1px);
+}
+
+.midi-backup-actions .btn.info {
+    background: linear-gradient(135deg, #17a2b8, #20c997);
+    color: white;
+}
+
+.midi-backup-actions .btn.info:hover {
+    background: linear-gradient(135deg, #138496, #1da88a);
+    transform: translateY(-1px);
+}
+
+.btn-icon {
+    font-size: 14px;
+}
+
+.btn-text {
+    font-size: 14px;
+}
+
+@media (max-width: 768px) {
+    .midi-backup-actions {
+        flex-direction: column;
+    }
+}

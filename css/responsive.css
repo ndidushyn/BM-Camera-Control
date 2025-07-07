@@ -1,0 +1,14 @@
+/* Responsive Base */
+@media (max-width: 768px) {
+    .app-container {
+        padding: 10px;
+    }
+    
+    .app-header {
+        padding: 20px;
+    }
+    
+    .header-content h1 {
+        font-size: 2em;
+    }
+}

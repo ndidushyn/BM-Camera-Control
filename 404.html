@@ -3,27 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redirecting... - BM Camera Control</title>
+    <title>Blackmagic Camera Control</title>
+    <meta http-equiv="refresh" content="0; url=/BM-Camera-Control/">
     <script>
-        // GitHub Pages SPA redirect
-        const currentPath = window.location.pathname;
-        const basePath = '/BM-Camera-Control';
-        
-        if (currentPath.startsWith(basePath)) {
-            // Already has correct base path, redirect to index
-            window.location.replace(basePath + '/');
-        } else {
-            // Add base path and redirect
-            window.location.replace(basePath + currentPath);
-        }
+        // Enhanced GitHub Pages SPA redirect with Chrome PWA compatibility
+        (function() {
+            const currentPath = window.location.pathname;
+            const search = window.location.search;
+            const hash = window.location.hash;
+            const basePath = '/BM-Camera-Control';
+            
+            console.log('404 Redirect - Current path:', currentPath);
+            console.log('404 Redirect - Search:', search);
+            console.log('404 Redirect - Hash:', hash);
+            console.log('404 Redirect - User agent:', navigator.userAgent);
+            console.log('404 Redirect - Referrer:', document.referrer);
+            
+            // Check if this is a PWA launch
+            const isPWA = window.matchMedia('(display-mode: standalone)').matches ||
+                         window.navigator.standalone ||
+                         document.referrer.includes('android-app://');
+            
+            console.log('404 Redirect - Is PWA:', isPWA);
+            
+            let targetUrl;
+            
+            if (isPWA) {
+                // For PWA, try relative path first
+                if (currentPath === '/' || currentPath === basePath || currentPath === basePath + '/') {
+                    targetUrl = './index.html' + search + hash;
+                } else {
+                    targetUrl = window.location.origin + basePath + '/index.html' + search + hash;
+                }
+            } else {
+                // For regular web access
+                targetUrl = window.location.origin + basePath + '/' + search + hash;
+            }
+            
+            console.log('404 Redirect - Target URL:', targetUrl);
+            
+            // Try different redirect methods
+            try {
+                window.location.replace(targetUrl);
+            } catch (e) {
+                console.log('404 Redirect - Replace failed, trying assign:', e);
+                window.location.assign(targetUrl);
+            }
+        })();
     </script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a, #2d3748);
+            color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .container {
+            text-align: center;
+            padding: 2rem;
+            max-width: 400px;
+        }
+        .icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+        }
+        .title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        .subtitle {
+            opacity: 0.7;
+            margin-bottom: 2rem;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top: 3px solid #2563eb;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
-    <div style="display: flex; align-items: center; justify-content: center; height: 100vh; font-family: Arial, sans-serif;">
-        <div style="text-align: center;">
-            <h1>🎥 Redirecting...</h1>
-            <p>Taking you to Blackmagic Camera Control</p>
-        </div>
+    <div class="container">
+        <div class="icon">🎥</div>
+        <div class="title">Blackmagic Camera Control</div>
+        <div class="subtitle">Переадресація...</div>
+        <div class="spinner"></div>
     </div>
 </body>
 </html>

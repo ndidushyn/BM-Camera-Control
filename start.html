@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blackmagic Camera Control</title>
+    <script>
+        // PWA Start page - ensures proper routing for Chrome PWA
+        (function() {
+            const search = window.location.search;
+            const hash = window.location.hash;
+            
+            console.log('PWA Start - Redirecting to index.html');
+            console.log('PWA Start - Search:', search);
+            console.log('PWA Start - Hash:', hash);
+            
+            // Redirect to index.html with any query parameters
+            window.location.replace('./index.html' + search + hash);
+        })();
+    </script>
+</head>
+<body>
+    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; text-align: center; padding: 2rem; background: #1a1a1a; color: white; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+        <div>
+            <h2>🎥 Blackmagic Camera Control</h2>
+            <p>Завантаження...</p>
+            <p><a href="./index.html" style="color: #2563eb;">Перейти до додатку</a></p>
+        </div>
+    </div>
+</body>
+</html>

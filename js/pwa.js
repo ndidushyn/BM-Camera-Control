@@ -33,15 +33,12 @@ class PWAManager {
     async registerServiceWorker() {
         if ('serviceWorker' in navigator) {
             try {
-                // Determine the correct service worker path
-                const swPath = window.location.hostname === 'ndidushyn.github.io' 
-                    ? '/BM-Camera-Control/sw.js' 
-                    : '/sw.js';
+                // Use relative path for better PWA compatibility
+                const swPath = './sw.js';
+                const scope = './';
                     
                 this.swRegistration = await navigator.serviceWorker.register(swPath, {
-                    scope: window.location.hostname === 'ndidushyn.github.io' 
-                        ? '/BM-Camera-Control/' 
-                        : '/'
+                    scope: scope
                 });
                 console.log('✅ Service Worker registered:', this.swRegistration);
                 
@@ -206,66 +203,67 @@ class PWAManager {
                 .pwa-install-banner {
                     left: 10px;
                     right: 10px;
-                    bottom: 80px;
+                    bottom: 20px;
                     max-width: none;
                     margin: 0;
                     background: var(--surface-color, #fff);
-                    border: 2px solid var(--primary-color, #2563eb);
+                    border: 1px solid var(--primary-color, #2563eb);
+                    border-radius: 8px;
                 }
                 
                 .pwa-install-content {
-                    padding: 16px;
-                    flex-direction: column;
-                    text-align: center;
+                    padding: 12px;
+                    flex-direction: row;
+                    align-items: center;
+                    gap: 12px;
                     position: relative;
                 }
                 
                 .pwa-install-icon {
-                    font-size: 32px;
-                    margin-bottom: 8px;
+                    font-size: 24px;
+                    flex-shrink: 0;
                 }
                 
                 .pwa-install-text {
-                    margin-bottom: 16px;
+                    flex: 1;
                 }
                 
                 .pwa-install-title {
-                    font-size: 16px;
-                    margin-bottom: 4px;
+                    font-size: 14px;
+                    margin-bottom: 2px;
+                    font-weight: 600;
                 }
                 
                 .pwa-install-subtitle {
-                    font-size: 14px;
+                    font-size: 12px;
+                    opacity: 0.8;
+                    line-height: 1.3;
                 }
                 
                 .pwa-install-actions {
                     flex-direction: row;
-                    justify-content: center;
-                    gap: 12px;
-                    width: 100%;
+                    gap: 8px;
+                    flex-shrink: 0;
                 }
                 
                 .pwa-install-btn {
-                    flex: 1;
-                    max-width: 200px;
-                    padding: 14px 20px;
-                    font-size: 16px;
+                    padding: 10px 16px;
+                    font-size: 14px;
                     font-weight: 600;
+                    white-space: nowrap;
                 }
                 
                 .pwa-dismiss-btn {
-                    position: absolute;
-                    top: 8px;
-                    right: 8px;
+                    position: static;
                     background: var(--surface-color, #f3f4f6);
-                    border-radius: 50%;
-                    width: 36px;
-                    height: 36px;
+                    border-radius: 4px;
+                    width: 28px;
+                    height: 28px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    font-size: 20px;
-                    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                    font-size: 16px;
+                    flex-shrink: 0;
                 }
             }
         `;

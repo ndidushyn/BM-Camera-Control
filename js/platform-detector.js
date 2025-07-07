@@ -72,9 +72,39 @@ class PlatformDetector {
     
     // Check if running as PWA
     isPWA() {
-        return window.matchMedia && 
+        const isStandalone = window.matchMedia && 
                (window.matchMedia('(display-mode: standalone)').matches || 
                 window.navigator.standalone === true);
+        
+        // Additional Chrome PWA detection
+        const isChromePWA = isStandalone && this.userAgent.includes('chrome');
+        
+        if (isChromePWA) {
+            console.log('🔍 Chrome PWA detected - applying compatibility fixes');
+            this.applyChromePWAFixes();
+        }
+        
+        return isStandalone;
+    }
+    
+    // Apply Chrome PWA specific fixes
+    applyChromePWAFixes() {
+        // Fix for Chrome PWA navigation issues
+        if (window.location.pathname === '/' || window.location.pathname.endsWith('/start.html')) {
+            const search = window.location.search;
+            const hash = window.location.hash;
+            
+            // Redirect to index.html if not already there
+            if (!window.location.pathname.endsWith('/index.html')) {
+                console.log('🔧 Chrome PWA: Redirecting to index.html');
+                setTimeout(() => {
+                    window.location.replace('./index.html' + search + hash);
+                }, 100);
+            }
+        }
+        
+        // Add Chrome PWA specific styles
+        document.body.classList.add('chrome-pwa');
     }
     
     // Check if feature is available
@@ -324,6 +354,36 @@ platformStyles.textContent = `
     .pwa-mode .app-container {
         min-height: 100vh;
         min-height: 100dvh;
+    }
+    
+    /* Chrome PWA specific fixes */
+    .chrome-pwa {
+        /* Fix for Chrome PWA navigation bar */
+        padding-top: env(safe-area-inset-top, 0);
+    }
+    
+    .chrome-pwa .app-header {
+        /* Ensure header is properly positioned in Chrome PWA */
+        position: relative;
+        z-index: 1000;
+    }
+    
+    /* PWA loading state */
+    .pwa-loading {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--background-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+    }
+    
+    .pwa-loading.hidden {
+        display: none;
     }
 `;
 document.head.appendChild(platformStyles);

@@ -1,25 +1,28 @@
-const CACHE_NAME = 'bm-camera-control-v1.0.0';
+const CACHE_NAME = 'bm-camera-control-v1.0.1';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/css/base.css',
-  '/css/header.css',
-  '/css/navigation.css',
-  '/css/buttons.css',
-  '/css/forms.css',
-  '/css/panels.css',
-  '/css/camera-controls.css',
-  '/css/color-controls.css',
-  '/css/presets.css',
-  '/css/midi.css',
-  '/css/midi-custom.css',
-  '/css/toast.css',
-  '/css/responsive.css',
-  '/js/app.js',
-  '/js/camera-controller.js',
-  '/js/midi-controller.js',
-  '/icons/icon-192x192.png',
-  '/icons/icon-512x512.png'
+  './',
+  './index.html',
+  './start.html',
+  './css/base.css',
+  './css/header.css',
+  './css/navigation.css',
+  './css/buttons.css',
+  './css/forms.css',
+  './css/panels.css',
+  './css/camera-controls.css',
+  './css/color-controls.css',
+  './css/presets.css',
+  './css/midi.css',
+  './css/midi-custom.css',
+  './css/toast.css',
+  './css/responsive.css',
+  './js/app.js',
+  './js/camera-controller.js',
+  './js/midi-controller.js',
+  './js/platform-detector.js',
+  './js/pwa.js',
+  './icons/icon-192x192.png',
+  './icons/icon-512x512.png'
 ];
 
 // Install event - cache resources
@@ -99,9 +102,16 @@ self.addEventListener('fetch', (event) => {
           .catch((error) => {
             console.error('[SW] Fetch failed:', error);
             
-            // Return offline page for navigation requests
+            // Return appropriate fallback for navigation requests
             if (event.request.destination === 'document') {
-              return caches.match('/index.html');
+              // For PWA navigation requests, try to serve index.html
+              return caches.match('./index.html').then((indexResponse) => {
+                if (indexResponse) {
+                  return indexResponse;
+                }
+                // If index.html not in cache, try root
+                return caches.match('./');
+              });
             }
             
             throw error;
@@ -127,8 +137,8 @@ self.addEventListener('push', (event) => {
   
   const options = {
     body: event.data ? event.data.text() : 'Camera status update',
-    icon: '/icons/icon-192x192.png',
-    badge: '/icons/icon-72x72.png',
+    icon: './icons/icon-192x192.png',
+    badge: './icons/icon-72x72.png',
     vibrate: [100, 50, 100],
     data: {
       dateOfArrival: Date.now(),
@@ -138,7 +148,7 @@ self.addEventListener('push', (event) => {
       {
         action: 'explore',
         title: 'Open Camera Control',
-        icon: '/icons/icon-96x96.png'
+        icon: './icons/icon-96x96.png'
       },
       {
         action: 'close',
@@ -160,7 +170,7 @@ self.addEventListener('notificationclick', (event) => {
   
   if (event.action === 'explore') {
     event.waitUntil(
-      clients.openWindow('/')
+      clients.openWindow('./')
     );
   }
 });

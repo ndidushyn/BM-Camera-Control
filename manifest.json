@@ -2,7 +2,7 @@
   "name": "Blackmagic Camera Control Center",
   "short_name": "BM Camera Control",
   "description": "Professional camera control interface for Blackmagic cameras with MIDI support",
-  "start_url": "./",
+  "start_url": "./start.html",
   "display": "standalone",
   "background_color": "#1a1a1a",
   "theme_color": "#2563eb",
@@ -65,7 +65,7 @@
       "name": "Підключити камеру",
       "short_name": "Підключити",
       "description": "Швидке підключення до камери",
-      "url": "/?action=connect",
+      "url": "./?action=connect",
       "icons": [
         {
           "src": "icons/icon-96x96.png",
@@ -77,7 +77,7 @@
       "name": "MIDI контроль",
       "short_name": "MIDI",
       "description": "Відкрити MIDI контролер",
-      "url": "/?tab=midi",
+      "url": "./?tab=midi",
       "icons": [
         {
           "src": "icons/icon-96x96.png",
@@ -94,7 +94,7 @@
   "protocol_handlers": [
     {
       "protocol": "web+bmcamera",
-      "url": "/?camera=%s"
+      "url": "./?camera=%s"
     }
   ]
 }

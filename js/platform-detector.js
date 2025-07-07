@@ -153,27 +153,9 @@ class PlatformDetector {
     
     // Show MIDI not available message
     showMIDINotAvailableMessage() {
-        // Add info banner about MIDI limitations
-        const infoPanel = document.createElement('div');
-        infoPanel.className = 'platform-info-panel';
-        infoPanel.innerHTML = `
-            <div class="platform-info-content">
-                <div class="platform-info-icon">📱</div>
-                <div class="platform-info-text">
-                    <div class="platform-info-title">Мобільна версія</div>
-                    <div class="platform-info-subtitle">
-                        MIDI контроль доступний тільки на комп'ютері. 
-                        На мобільних пристроях використовуйте тільки touch керування.
-                    </div>
-                </div>
-            </div>
-        `;
-        
-        // Insert after header
-        const header = document.querySelector('.app-header');
-        if (header && this.features.mobile) {
-            header.insertAdjacentElement('afterend', infoPanel);
-        }
+        // Відключено - не показуємо повідомлення про мобільну версію
+        // Користувачі можуть самі зрозуміти, що MIDI недоступний через відсутність вкладки
+        return;
     }
     
     // Optimize UI for mobile

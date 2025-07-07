@@ -5,6 +5,15 @@
 
 class MIDIController {
     constructor() {
+        // Check if MIDI is supported on this platform
+        this.isSupported = this.checkMIDISupport();
+        
+        if (!this.isSupported) {
+            console.log('🎹 MIDI not supported on this platform');
+            this.showUnsupportedMessage();
+            return;
+        }
+        
         this.midiAccess = null;
         this.currentDevice = null;
         this.isLearning = false;
@@ -19,6 +28,129 @@ class MIDIController {
         this.initializeCustomButtons();
         this.loadFromLocalStorage();
         this.requestMIDIAccess();
+    }
+
+    // Check if MIDI is supported
+    checkMIDISupport() {
+        // Check if Web MIDI API is available
+        if (!('requestMIDIAccess' in navigator)) {
+            return false;
+        }
+        
+        // Check platform support via platform detector
+        if (window.platformDetector && !window.platformDetector.hasFeature('midi')) {
+            return false;
+        }
+        
+        // Additional mobile detection fallback
+        const isMobile = /android|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent);
+        if (isMobile) {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    // Show message when MIDI is not supported
+    showUnsupportedMessage() {
+        const midiContainer = document.querySelector('.midi-container');
+        if (midiContainer) {
+            midiContainer.innerHTML = `
+                <div class="midi-unsupported-message">
+                    <div class="unsupported-icon">🎹</div>
+                    <h3>MIDI недоступний</h3>
+                    <p>MIDI контроль працює тільки на комп'ютерах з підтримкою Web MIDI API.</p>
+                    <div class="unsupported-reasons">
+                        <div class="reason-item">
+                            <span class="reason-icon">📱</span>
+                            <span>На мобільних пристроях MIDI не підтримується</span>
+                        </div>
+                        <div class="reason-item">
+                            <span class="reason-icon">🌐</span>
+                            <span>Потрібен сучасний браузер з Web MIDI API</span>
+                        </div>
+                        <div class="reason-item">
+                            <span class="reason-icon">🎛️</span>
+                            <span>Використовуйте touch керування замість MIDI</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Add styles for unsupported message
+            const style = document.createElement('style');
+            style.textContent = `
+                .midi-unsupported-message {
+                    text-align: center;
+                    padding: 60px 20px;
+                    color: var(--text-secondary);
+                }
+                
+                .unsupported-icon {
+                    font-size: 48px;
+                    margin-bottom: 20px;
+                    opacity: 0.5;
+                }
+                
+                .midi-unsupported-message h3 {
+                    font-size: 24px;
+                    margin-bottom: 16px;
+                    color: var(--text-primary);
+                }
+                
+                .midi-unsupported-message p {
+                    font-size: 16px;
+                    margin-bottom: 32px;
+                    max-width: 400px;
+                    margin-left: auto;
+                    margin-right: auto;
+                    line-height: 1.5;
+                }
+                
+                .unsupported-reasons {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 12px;
+                    max-width: 500px;
+                    margin: 0 auto;
+                }
+                
+                .reason-item {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    padding: 12px 16px;
+                    background: var(--surface-color);
+                    border: 1px solid var(--border-color);
+                    border-radius: 8px;
+                    text-align: left;
+                }
+                
+                .reason-icon {
+                    font-size: 18px;
+                    flex-shrink: 0;
+                }
+                
+                @media (max-width: 768px) {
+                    .midi-unsupported-message {
+                        padding: 40px 16px;
+                    }
+                    
+                    .unsupported-icon {
+                        font-size: 36px;
+                    }
+                    
+                    .midi-unsupported-message h3 {
+                        font-size: 20px;
+                    }
+                    
+                    .midi-unsupported-message p {
+                        font-size: 14px;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
     }
 
     initializeElements() {

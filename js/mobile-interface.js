@@ -266,20 +266,44 @@ class MobileInterface {
         
         if (!slider || !valueDisplay) return;
         
+        // Update slider progress visual
+        const updateSliderProgress = (value) => {
+            const percent = ((value - min) / (max - min)) * 100;
+            slider.style.setProperty('--slider-progress', percent + '%');
+        };
+        
         slider.addEventListener('input', (e) => {
-            const value = parseInt(e.target.value);
-            valueDisplay.textContent = `${value}${unit}`;
+            const value = parseFloat(e.target.value);
+            let displayValue = value;
+            
+            // Special formatting for different controls
+            if (name === 'iris') {
+                const fStop = this.irisToFStop(value);
+                displayValue = `f/${fStop}`;
+            } else if (name === 'zoom') {
+                displayValue = `${(value / 100).toFixed(1)}x`;
+            } else if (name === 'shutter') {
+                displayValue = `1/${value}`;
+            } else {
+                displayValue = `${value}${unit}`;
+            }
+            
+            valueDisplay.textContent = displayValue;
             valueDisplay.classList.add('updated');
             
-            // Update CSS custom property for progress indicator
-            document.documentElement.style.setProperty(`--${name}-value`, value);
+            // Update progress indicator
+            updateSliderProgress(value);
             
             setTimeout(() => {
                 valueDisplay.classList.remove('updated');
             }, 600);
             
             callback(value);
+            this.hapticFeedback('light');
         });
+        
+        // Initialize progress
+        updateSliderProgress(parseFloat(slider.value));
     }
     
     // Convert iris value to f-stop

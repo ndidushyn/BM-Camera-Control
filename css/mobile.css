@@ -1,6 +1,6 @@
 /* Mobile Interface Base Styles */
 .mobile-interface {
-    background: var(--background-color);
+    background: #f8fafc;
     color: var(--text-color);
     font-family: var(--font-family);
     height: 100vh;
@@ -9,7 +9,7 @@
     display: flex;
     flex-direction: column;
     position: relative;
-    --mobile-header-height: 60px;
+    --mobile-header-height: 50px;
     --mobile-nav-height: 80px;
     --mobile-safe-area-top: env(safe-area-inset-top);
     --mobile-safe-area-bottom: env(safe-area-inset-bottom);
@@ -22,11 +22,12 @@
     left: 0;
     right: 0;
     z-index: 1000;
-    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-    color: white;
+    background: white;
+    color: var(--text-color);
     padding: var(--mobile-safe-area-top) 16px 0 16px;
     height: calc(var(--mobile-header-height) + var(--mobile-safe-area-top));
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid #e2e8f0;
 }
 
 .mobile-header-content {
@@ -43,10 +44,10 @@
 }
 
 .mobile-title {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     margin: 0;
-    color: white;
+    color: var(--text-color);
 }
 
 /* Connection Button */

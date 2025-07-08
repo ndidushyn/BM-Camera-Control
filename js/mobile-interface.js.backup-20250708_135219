@@ -9,6 +9,24 @@ class MobileInterface {
         this.cameraController = null;
         
         this.init();
+    } 
+                                         error.message.includes('fetch') ||
+                                         error.message.includes('ERR_')
+                                     ));
+            
+            if (isCertificateError && window.location.protocol === 'https:') {
+                // Показуємо спеціальну допомогу для сертифікатів
+                this.showCertificateErrorHelp(cameraName, error.message);
+            } else if (isMixedContentError) {
+                // Показуємо спеціальне повідомлення з рішеннями
+                this.showMixedContentHelp(cameraName);
+            } else {
+                this.showToast(`Не вдалося підключитися до "${cameraName}": ${error.message}`, 'error');
+            }     this.recordingStartTime = null;
+        this.recordingInterval = null;
+        this.cameraController = null;
+        
+        this.init();
     }
     
     init() {
@@ -52,27 +70,22 @@ class MobileInterface {
             this.cameraController = new BlackmagicCameraController();
             console.log('✅ BlackmagicCameraController initialized');
             
-            // Set up callbacks for logging and status updates
-            this.cameraController.setCallbacks(
-                (message, type) => {
-                    console.log(`Camera: ${message}`);
-                    if (type === 'error') {
-                        this.showToast(message, 'error');
-                    }
-                },
-                (isConnected, message) => {
-                    this.isConnected = isConnected;
-                    this.updateConnectionStatus();
-                    if (isConnected) {
-                        this.showToast('Камера підключена', 'success');
-                    } else if (message === 'Відключено') {
-                        this.showToast('Камера відключена', 'info');
-                    }
-                }
-            );
+            // Listen to connection events
+            document.addEventListener('cameraConnected', () => {
+                this.isConnected = true;
+                this.updateConnectionStatus();
+                this.showToast('Камера підключена', 'success');
+            });
             
-        } else {
-            console.error('BlackmagicCameraController not found');
+            document.addEventListener('cameraDisconnected', () => {
+                this.isConnected = false;
+                this.updateConnectionStatus();
+                this.showToast('Камера відключена', 'info');
+            });
+            
+            document.addEventListener('cameraError', (event) => {
+                this.showToast(`Помилка: ${event.detail.message}`, 'error');
+            });
         }
     }
     
@@ -118,6 +131,7 @@ class MobileInterface {
     setupConnectionControls() {
         const connectionBtn = document.getElementById('connection-toggle');
         const disconnectBtn = document.getElementById('disconnect-btn');
+        const certHelpBtn = document.getElementById('cert-help-btn');
         
         connectionBtn?.addEventListener('click', () => {
             if (this.isConnected) {
@@ -132,18 +146,21 @@ class MobileInterface {
             this.disconnect();
             this.hapticFeedback();
         });
+        
+        // Certificate help button
+        certHelpBtn?.addEventListener('click', () => {
+            const cameraNameInput = document.getElementById('camera-name');
+            const cameraName = cameraNameInput?.value.trim() || 'camera1';
+            this.openCertificateHelper(cameraName);
+            this.hapticFeedback();
+        });
     }
     
     // Connect to camera
     async connect() {
         const connectionBtn = document.getElementById('connection-toggle');
         const cameraNameInput = document.getElementById('camera-name');
-        const usernameInput = document.getElementById('auth-username');
-        const passwordInput = document.getElementById('auth-password');
-        
         const cameraName = cameraNameInput?.value.trim();
-        const username = usernameInput?.value.trim() || '';
-        const password = passwordInput?.value || '';
         
         if (!cameraName) {
             this.showToast('Введіть назву камери', 'warning');
@@ -156,7 +173,7 @@ class MobileInterface {
             connectionBtn.querySelector('.connection-text').textContent = 'Підключення...';
             
             if (this.cameraController) {
-                await this.cameraController.connect(cameraName, username, password);
+                await this.cameraController.connect(cameraName);
             } else {
                 throw new Error('Camera controller недоступний. Переконайтеся, що камера в мережі.');
             }
@@ -708,37 +725,57 @@ class MobileInterface {
             <div class="modal-overlay">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h3>🔒 Проблема HTTPS/HTTP</h3>
+                        <h3>🔒 Проблема підключення</h3>
                         <button class="modal-close">×</button>
                     </div>
                     <div class="modal-body">
                         <p><strong>Не вдалося підключитися до "${cameraName}"</strong></p>
-                        <p>Браузер блокує HTTP запити з HTTPS сторінки (Mixed Content).</p>
+                        <p>Можливі причини: Mixed Content блокування або недовірений HTTPS сертифікат</p>
                         
                         <h4>💡 Рішення:</h4>
                         <div class="solutions">
+                            <div class="solution priority">
+                                <strong>🎯 1. Налаштування HTTPS сертифікату</strong>
+                                <p>Якщо камера має HTTPS сертифікат, потрібно довіритись йому:</p>
+                                <button class="cert-btn" onclick="window.mobileInterface.openCertificateHelper('${cameraName}')">
+                                    🔐 Відкрити сертифікат камери
+                                </button>
+                                <small>Після прийняття сертифікату поверніться і спробуйте знову</small>
+                            </div>
+                            
                             <div class="solution">
-                                <strong>1. Локальна версія (рекомендовано)</strong>
+                                <strong>2. Локальна версія (рекомендовано)</strong>
                                 <p>Завантажте та запустіть додаток локально:</p>
                                 <a href="https://github.com/ndidushyn/BM-Camera-Control/archive/refs/heads/main.zip" 
                                    class="download-btn" target="_blank">
                                    📥 Завантажити ZIP
                                 </a>
-                                <small>Розпакуйте та відкрийте index.html</small>
+                                <small>Розпакуйте та відкрийте mobile.html</small>
                             </div>
                             
                             <div class="solution">
-                                <strong>2. Дозволити Mixed Content</strong>
+                                <strong>3. Дозволити Mixed Content</strong>
                                 <p>В адресному рядку натисніть на іконку замка → "Дозволити незахищений контент"</p>
                             </div>
                             
                             <div class="solution">
-                                <strong>3. HTTP версія</strong>
+                                <strong>4. HTTP версія</strong>
                                 <p>Спробуйте HTTP версію (якщо доступна):</p>
-                                <button class="http-btn" onclick="window.location.href='http://ndidushyn.github.io/BM-Camera-Control/'">
+                                <button class="http-btn" onclick="window.location.href='http://ndidushyn.github.io/BM-Camera-Control/mobile.html'">
                                     🌐 Відкрити HTTP версію
                                 </button>
                             </div>
+                        </div>
+                        
+                        <div class="help-note">
+                            <p><strong>📋 Покрокові інструкції для HTTPS:</strong></p>
+                            <ol>
+                                <li>Натисніть кнопку "Відкрити сертифікат камери"</li>
+                                <li>У новій вкладці побачите попередження про сертифікат</li>
+                                <li>Натисніть "Додатково" або "Advanced"</li>
+                                <li>Натисніть "Продовжити на [адреса камери]" або "Proceed"</li>
+                                <li>Поверніться сюди і спробуйте підключитися знову</li>
+                            </ol>
                         </div>
                     </div>
                 </div>
@@ -773,7 +810,51 @@ class MobileInterface {
         document.addEventListener('keydown', handleEscape);
     }
 
-    // ...existing code...
+    // Open certificate helper for HTTPS trust
+    openCertificateHelper(cameraName) {
+        if (!this.cameraController) {
+            this.showToast('❌ Camera controller не ініціалізований', 'error');
+            return;
+        }
+        
+        // Отримуємо адресу камери з поля вводу
+        const addressInput = document.getElementById('camera-name'); // Використовуємо camera-name ID
+        const cameraAddress = addressInput ? addressInput.value.trim() : cameraName;
+        
+        if (!cameraAddress) {
+            this.showToast('❌ Введіть IP адресу або назву камери', 'error');
+            return;
+        }
+        
+        // Викликаємо функцію з camera controller
+        this.cameraController.openCertificateTab(cameraAddress);
+        
+        // Показуємо додаткові інструкції
+        this.showToast('🔗 Відкрита вкладка з сертифікатом. Прийміть сертифікат і поверніться', 'info', 8000);
+    }
+    
+    // Show enhanced certificate help
+    showCertificateHelp(cameraAddress) {
+        const isHTTPS = window.location.protocol === 'https:';
+        
+        if (isHTTPS) {
+            // Автоматично відкриваємо сертифікат
+            if (this.cameraController) {
+                this.cameraController.openCertificateTab(cameraAddress);
+            }
+            
+            // Показуємо детальний toast з інструкціями
+            this.showToast(`
+🔐 Відкрита вкладка з сертифікатом камери
+📋 Кроки:
+1. Прийміть сертифікат у новій вкладці
+2. Поверніться сюди
+3. Спробуйте підключитися знову
+            `.trim(), 'info', 10000);
+        } else {
+            this.showToast('💡 HTTPS сертифікат потрібен тільки при HTTPS підключенні', 'info', 5000);
+        }
+    }
 }
 
 // Initialize mobile interface when DOM is loaded

@@ -21,6 +21,12 @@ class BlackmagicCameraController {
         
         this.logCallback = null;
         this.statusCallback = null;
+        
+        // Authentication credentials
+        this.credentials = {
+            username: '',
+            password: ''
+        };
     }
 
     /**
@@ -54,10 +60,18 @@ class BlackmagicCameraController {
     /**
      * Підключення до камери
      */
-    async connect(cameraAddress) {
+    async connect(cameraAddress, username = '', password = '') {
         if (!cameraAddress) {
             throw new Error('Адреса камери не вказана');
         }
+
+        // Зберігаємо credentials
+        this.credentials.username = username;
+        this.credentials.password = password;
+
+        // Логуємо спробу підключення
+        const authInfo = username ? ` з авторизацією (${username})` : ' без авторизації';
+        this.log(`Підключення до ${cameraAddress}${authInfo}`, 'info');
 
         // Визначаємо протокол на основі того, як завантажена сторінка
         const isHTTPS = window.location.protocol === 'https:';
@@ -141,6 +155,13 @@ class BlackmagicCameraController {
             recording: false,
             colorCorrection: null
         };
+        
+        // Очищаємо credentials
+        this.credentials = {
+            username: '',
+            password: ''
+        };
+        
         this.updateStatus(false, 'Відключено');
         this.log('Відключено від камери', 'info');
     }
@@ -162,6 +183,12 @@ class BlackmagicCameraController {
             },
             signal: AbortSignal.timeout(timeout)
         };
+
+        // Додаємо Basic Authentication якщо є credentials
+        if (this.credentials.username && this.credentials.password) {
+            const auth = btoa(`${this.credentials.username}:${this.credentials.password}`);
+            options.headers['Authorization'] = `Basic ${auth}`;
+        }
 
         if (body) {
             options.body = JSON.stringify(body);
@@ -775,4 +802,5 @@ class BlackmagicCameraController {
 }
 
 // Експорт класу для використання в інших модулях
-window.CameraController = BlackmagicCameraController;
+window.BlackmagicCameraController = BlackmagicCameraController;
+window.CameraController = BlackmagicCameraController; // Для зворотної сумісності

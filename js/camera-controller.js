@@ -90,13 +90,35 @@ class BlackmagicCameraController {
                     return true;
                 }
             } catch (error) {
-                this.log(`Підключення через ${protocol.toUpperCase()} не вдалось: ${error.message}`, 'warning');
+                // Перевіряємо чи це Mixed Content помилка
+                const isMixedContentError = error.message.includes('Mixed Content') || 
+                                          error.message.includes('insecure resource') ||
+                                          error.message.includes('blocked') ||
+                                          (window.location.protocol === 'https:' && protocol === 'http' && error.message.includes('fetch'));
                 
-                // Якщо це останній протокол у списку, кидаємо помилку
+                if (isMixedContentError) {
+                    this.log(`🔒 Mixed Content блокування: ${protocol.toUpperCase()} заблокований браузером`, 'warning');
+                } else {
+                    this.log(`Підключення через ${protocol.toUpperCase()} не вдалось: ${error.message}`, 'warning');
+                }
+                
+                // Якщо це останній протокол у списку, кидаємо спеціальну помилку
                 if (protocol === protocols[protocols.length - 1]) {
                     this.updateStatus(false, 'Помилка підключення');
                     this.log(`Всі спроби підключення до ${cameraAddress} невдалі`, 'error');
-                    throw new Error(`Не вдалося підключитися до камери через жоден протокол. Остання помилка: ${error.message}`);
+                    
+                    // Створюємо детальну помилку з порадами
+                    let errorMessage = `Не вдалося підключитися до камери через жоден протокол.`;
+                    
+                    if (window.location.protocol === 'https:') {
+                        errorMessage += `\n\n🔒 HTTPS/HTTP Конфлікт виявлено!`;
+                        errorMessage += `\n\n💡 Рішення:`;
+                        errorMessage += `\n1. Скачайте та запустіть локальну версію`;
+                        errorMessage += `\n2. Дозвольте Mixed Content в браузері`;
+                        errorMessage += `\n3. Використайте HTTP версію сайту`;
+                    }
+                    
+                    throw new Error(errorMessage);
                 }
             }
         }
@@ -725,6 +747,30 @@ class BlackmagicCameraController {
      */
     isConnectionActive() {
         return this.isConnected;
+    }
+
+    /**
+     * Генерація посилання для завантаження локальної версії
+     */
+    static generateLocalDownloadInfo() {
+        const isHTTPS = window.location.protocol === 'https:';
+        const currentUrl = window.location.href;
+        
+        if (isHTTPS && currentUrl.includes('github.io')) {
+            return {
+                needsLocal: true,
+                downloadUrl: currentUrl.replace('https://ndidushyn.github.io/BM-Camera-Control/', 'https://github.com/ndidushyn/BM-Camera-Control/archive/refs/heads/main.zip'),
+                httpUrl: currentUrl.replace('https://', 'http://'),
+                instructions: [
+                    '1. Завантажте ZIP файл проекту',
+                    '2. Розпакуйте в локальну папку',
+                    '3. Відкрийте index.html в браузері',
+                    '4. Або дозвольте Mixed Content в поточному браузері'
+                ]
+            };
+        }
+        
+        return { needsLocal: false };
     }
 }
 

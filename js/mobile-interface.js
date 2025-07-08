@@ -154,14 +154,19 @@ class MobileInterface {
         } catch (error) {
             console.error('Connection failed:', error);
             
-            // Перевіряємо чи це помилка Mixed Content
+            // Перевіряємо чи це помилка Mixed Content або HTTPS конфлікт
             const isMixedContentError = error.message.includes('Mixed Content') || 
                                       error.message.includes('insecure resource') ||
-                                      error.message.includes('HTTPS') ||
-                                      (window.location.protocol === 'https:' && error.message.includes('network'));
+                                      error.message.includes('HTTPS/HTTP Конфлікт') ||
+                                      error.message.includes('blocked') ||
+                                      (window.location.protocol === 'https:' && (
+                                          error.message.includes('network') || 
+                                          error.message.includes('fetch')
+                                      ));
             
             if (isMixedContentError) {
-                this.showToast(`🔒 Помилка HTTPS/HTTP: Спробуйте використати локальну версію або переконайтеся, що камера підтримує HTTPS`, 'warning', 8000);
+                // Показуємо спеціальне повідомлення з рішеннями
+                this.showMixedContentHelp(cameraName);
             } else {
                 this.showToast(`Не вдалося підключитися до "${cameraName}": ${error.message}`, 'error');
             }
@@ -672,17 +677,93 @@ class MobileInterface {
         console.log(`🍞 Toast: ${message} (${type})`);
     }
     
-    // Setup desktop mode button
-    setupDesktopModeButton() {
-        const desktopBtn = document.getElementById('desktop-mode');
+    // Show detailed help for Mixed Content issues
+    showMixedContentHelp(cameraName) {
+        const isGitHubPages = window.location.hostname.includes('github.io');
         
-        desktopBtn?.addEventListener('click', () => {
-            const currentParams = new URLSearchParams(window.location.search);
-            currentParams.set('desktop', '1');
-            window.location.href = `./index.html?${currentParams.toString()}`;
-            this.hapticFeedback();
-        });
+        if (isGitHubPages) {
+            // Показуємо модальне вікно з детальними інструкціями
+            this.showMixedContentModal(cameraName);
+        } else {
+            this.showToast(`🔒 Помилка HTTPS/HTTP: Спробуйте дозволити Mixed Content в браузері`, 'warning', 8000);
+        }
     }
+
+    // Show modal with Mixed Content solutions
+    showMixedContentModal(cameraName) {
+        // Створюємо модальне вікно
+        const modal = document.createElement('div');
+        modal.className = 'mixed-content-modal';
+        modal.innerHTML = `
+            <div class="modal-overlay">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>🔒 Проблема HTTPS/HTTP</h3>
+                        <button class="modal-close">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong>Не вдалося підключитися до "${cameraName}"</strong></p>
+                        <p>Браузер блокує HTTP запити з HTTPS сторінки (Mixed Content).</p>
+                        
+                        <h4>💡 Рішення:</h4>
+                        <div class="solutions">
+                            <div class="solution">
+                                <strong>1. Локальна версія (рекомендовано)</strong>
+                                <p>Завантажте та запустіть додаток локально:</p>
+                                <a href="https://github.com/ndidushyn/BM-Camera-Control/archive/refs/heads/main.zip" 
+                                   class="download-btn" target="_blank">
+                                   📥 Завантажити ZIP
+                                </a>
+                                <small>Розпакуйте та відкрийте index.html</small>
+                            </div>
+                            
+                            <div class="solution">
+                                <strong>2. Дозволити Mixed Content</strong>
+                                <p>В адресному рядку натисніть на іконку замка → "Дозволити незахищений контент"</p>
+                            </div>
+                            
+                            <div class="solution">
+                                <strong>3. HTTP версія</strong>
+                                <p>Спробуйте HTTP версію (якщо доступна):</p>
+                                <button class="http-btn" onclick="window.location.href='http://ndidushyn.github.io/BM-Camera-Control/'">
+                                    🌐 Відкрити HTTP версію
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        // Закриття модального вікна
+        const closeBtn = modal.querySelector('.modal-close');
+        const overlay = modal.querySelector('.modal-overlay');
+        
+        const closeModal = () => {
+            modal.remove();
+        };
+        
+        closeBtn.addEventListener('click', closeModal);
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                closeModal();
+            }
+        });
+        
+        // Закриття по ESC
+        const handleEscape = (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+                document.removeEventListener('keydown', handleEscape);
+            }
+        };
+        
+        document.addEventListener('keydown', handleEscape);
+    }
+
+    // ...existing code...
 }
 
 // Initialize mobile interface when DOM is loaded

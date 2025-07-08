@@ -147,7 +147,19 @@ class MobileInterface {
             
         } catch (error) {
             console.error('Connection failed:', error);
-            this.showToast(`Не вдалося підключитися до "${cameraName}"`, 'error');
+            
+            // Перевіряємо чи це помилка Mixed Content
+            const isMixedContentError = error.message.includes('Mixed Content') || 
+                                      error.message.includes('insecure resource') ||
+                                      error.message.includes('HTTPS') ||
+                                      (window.location.protocol === 'https:' && error.message.includes('network'));
+            
+            if (isMixedContentError) {
+                this.showToast(`🔒 Помилка HTTPS/HTTP: Спробуйте використати локальну версію або переконайтеся, що камера підтримує HTTPS`, 'warning', 8000);
+            } else {
+                this.showToast(`Не вдалося підключитися до "${cameraName}": ${error.message}`, 'error');
+            }
+            
             connectionBtn.classList.remove('connecting');
             connectionBtn.querySelector('.connection-text').textContent = 'Підключити';
         }
@@ -621,7 +633,7 @@ class MobileInterface {
     }
     
     // Show toast notification
-    showToast(message, type = 'info') {
+    showToast(message, type = 'info', duration = 3000) {
         const toastContainer = document.getElementById('toast-container');
         if (!toastContainer) return;
         
@@ -634,10 +646,10 @@ class MobileInterface {
         
         toastContainer.appendChild(toast);
         
-        // Auto remove after 3 seconds
+        // Auto remove after specified duration
         setTimeout(() => {
             toast.remove();
-        }, 3000);
+        }, duration);
         
         // Close button
         toast.querySelector('.toast-close').addEventListener('click', () => {

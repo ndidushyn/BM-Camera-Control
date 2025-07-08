@@ -58,26 +58,44 @@ class BlackmagicCameraController {
             throw new Error('Адреса камери не вказана');
         }
 
-        this.baseUrl = `http://${cameraAddress}/control/api/v1`;
-        this.log(`Підключення до камери: ${cameraAddress}`, 'info');
+        // Визначаємо протокол на основі того, як завантажена сторінка
+        const isHTTPS = window.location.protocol === 'https:';
+        
+        // Спробуємо підключитися
+        await this.attemptConnection(cameraAddress, isHTTPS);
+    }
 
-        try {
-            const response = await this.makeRequest('/system', 'GET', null, 5000);
-            
-            if (response.ok || response.status === 204) {
-                this.updateStatus(true, 'Підключено');
-                this.log('Успішно підключено до камери', 'success');
+    /**
+     * Спроба підключення з fallback між HTTPS та HTTP
+     */
+    async attemptConnection(cameraAddress, tryHTTPS = true) {
+        const protocols = tryHTTPS ? ['https', 'http'] : ['http', 'https'];
+        
+        for (const protocol of protocols) {
+            try {
+                this.baseUrl = `${protocol}://${cameraAddress}/control/api/v1`;
+                this.log(`Спроба підключення через ${protocol.toUpperCase()}: ${cameraAddress}`, 'info');
+
+                const response = await this.makeRequest('/system', 'GET', null, 5000);
                 
-                // Отримуємо початкові налаштування
-                await this.refreshAllSettings();
-                return true;
-            } else {
-                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                if (response.ok || response.status === 204) {
+                    this.updateStatus(true, 'Підключено');
+                    this.log(`Успішно підключено через ${protocol.toUpperCase()}`, 'success');
+                    
+                    // Отримуємо початкові налаштування
+                    await this.refreshAllSettings();
+                    return true;
+                }
+            } catch (error) {
+                this.log(`Підключення через ${protocol.toUpperCase()} не вдалось: ${error.message}`, 'warning');
+                
+                // Якщо це останній протокол у списку, кидаємо помилку
+                if (protocol === protocols[protocols.length - 1]) {
+                    this.updateStatus(false, 'Помилка підключення');
+                    this.log(`Всі спроби підключення до ${cameraAddress} невдалі`, 'error');
+                    throw new Error(`Не вдалося підключитися до камери через жоден протокол. Остання помилка: ${error.message}`);
+                }
             }
-        } catch (error) {
-            this.updateStatus(false, 'Помилка підключення');
-            this.log(`Помилка підключення: ${error.message}`, 'error');
-            throw error;
         }
     }
 
@@ -674,7 +692,7 @@ class BlackmagicCameraController {
             const formData = new FormData();
             formData.append('preset', file);
             
-            const response = await fetch(`http://${this.baseUrl}/control/api/v1/presets`, {
+            const response = await fetch(`${this.baseUrl}/presets`, {
                 method: 'POST',
                 body: formData
             });

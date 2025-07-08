@@ -1,6 +1,7 @@
 /**
- * Blackmagic Camera Controller
- * Управління камерою через REST API
+ * Blackmagic Camera Controller v2.0
+ * Управління камерою через REST API з HTTPS/HTTP fallback
+ * Updated: 2025-07-08
  */
 class BlackmagicCameraController {
     constructor() {
@@ -60,6 +61,8 @@ class BlackmagicCameraController {
 
         // Визначаємо протокол на основі того, як завантажена сторінка
         const isHTTPS = window.location.protocol === 'https:';
+        this.log(`🔒 Поточний протокол сторінки: ${window.location.protocol}`, 'info');
+        this.log(`🎯 Буде спробувано: ${isHTTPS ? 'HTTPS спочатку, потім HTTP' : 'HTTP спочатку, потім HTTPS'}`, 'info');
         
         // Спробуємо підключитися
         await this.attemptConnection(cameraAddress, isHTTPS);
@@ -724,3 +727,6 @@ class BlackmagicCameraController {
         return this.isConnected;
     }
 }
+
+// Експорт класу для використання в інших модулях
+window.CameraController = BlackmagicCameraController;

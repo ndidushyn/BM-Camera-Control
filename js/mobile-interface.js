@@ -43,8 +43,14 @@ class MobileInterface {
     
     // Initialize camera controller
     initCameraController() {
-        if (window.CameraController) {
-            this.cameraController = new CameraController();
+        console.log('🔧 Available classes:', {
+            CameraController: !!window.CameraController,
+            BlackmagicCameraController: !!window.BlackmagicCameraController
+        });
+        
+        if (window.BlackmagicCameraController) {
+            this.cameraController = new BlackmagicCameraController();
+            console.log('✅ BlackmagicCameraController initialized');
             
             // Listen to connection events
             document.addEventListener('cameraConnected', () => {
